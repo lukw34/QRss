@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0"
+    "sdkVersion": "25.0.0",
+    "android": {
+      "package": "ca.brentvatne.growlerprowler",
+      "config": {
+        "googleMaps": {
+          "apiKey": "1008902256746-addudn3737coqatb9vkbtej65m1knjbc.apps.googleusercontent.com"
+        }
+      }
+    }
   }
 }

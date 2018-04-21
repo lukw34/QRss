@@ -1,23 +1,40 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import Root from './app/components/Root';
+import {ThemeProvider} from 'react-native-material-ui'
+import firebase from 'firebase';
+import {Provider} from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
-    );
-  }
+import variables from './app/variables';
+import store from './app/store';
+
+const uiTheme = {
+    palette: {
+        primaryColor: variables.primary,
+        accentColor: variables.accentColor
+    }
+};
+
+class App extends React.Component {
+    componentWillMount() {
+        firebase.initializeApp({
+            apiKey: 'AIzaSyANU7T383c1vDYAD72raeu8wy3M0AkxHxo',
+            authDomain: 'qrss-c2191.firebaseapp.com',
+            databaseURL: 'https://qrss-c2191.firebaseio.com',
+            projectId: 'qrss-c2191',
+            storageBucket: 'gs://qrss-c2191.appspot.com'
+        });
+    }
+
+    render() {
+        return (
+            <ThemeProvider uiTheme={uiTheme}>
+                <Provider store={store}>
+                    <Root/>
+                </Provider>
+            </ThemeProvider>
+        );
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
