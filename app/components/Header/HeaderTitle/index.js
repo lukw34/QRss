@@ -11,7 +11,6 @@ const mapStateToProps = ({me: {me: {email, photoURL}}}) => ({
     email, photoURL
 });
 
-
 const HeaderTitle = ({email, photoURL: uri}) => (
     <View style={styles.headerTitleContainer}>
         <Image
@@ -29,4 +28,4 @@ HeaderTitle.propTypes = {
     photoURL: PropTypes.string
 };
 
-export default connect(mapStateToProps)(HeaderTitle)
+export default connect(mapStateToProps)(HeaderTitle);

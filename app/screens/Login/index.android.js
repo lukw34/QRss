@@ -46,33 +46,6 @@ class Login extends React.Component {
         style: PropTypes.number
     };
 
-    initModel = {
-        email: {
-            value: '',
-            password: true,
-            placeholder: 'User email',
-            inputType: 'icon-input',
-            icon: 'person',
-            keyboardType: 'email-address'
-        },
-        password: {
-            value: '',
-            password: true,
-            icon: 'lock',
-            placeholder: 'Password',
-            inputType: 'icon-input'
-        }
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.onModelChange = this.onModelChange.bind(this);
-        this.onSignInPress = this.onSignInPress.bind(this);
-        this.onGoogleSignInPress = this.onGoogleSignInPress.bind(this);
-        this.onFacebookSignInPress = this.onFacebookSignInPress.bind(this);
-        this.onSignUpPress = this.onSignUpPress.bind(this);
-    }
 
     componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
@@ -88,66 +61,33 @@ class Login extends React.Component {
                     0,
                     150
                 );
-                this.props.navigation.navigate('Main')
+                this.props.navigation.navigate('Main');
             }
         });
-
-
     }
 
     componentWillUnmount() {
         this.authSubscription();
     }
 
-
-    state = {
-        model: this.initModel
-    };
-
-    onModelChange(key, value) {
-        const {model} = this.state;
-        const modelValue = model[key] || {};
-        this.setState({
-            model: {
-                ...model,
-                [key]: {
-                    ...modelValue,
-                    value
-                }
-            }
-        });
-    }
-
-    onSignInPress() {
-        const {model: {email: {value: email}, password: {value: password}}} = this.state;
+    onSignInPress = ({email, password} = {}) => {
         const {authWithEmailAndPassword} = this.props;
         authWithEmailAndPassword(email, password);
-    }
+    };
 
-    onFacebookSignInPress() {
-        this.props.authWithFacebook();
-    }
 
-    onGoogleSignInPress() {
-        this.props.authWithGoogle();
-    }
-
-    onSignUpPress() {
-        this.props.navigation.navigate('Registration');
-    }
+    onSignUpPress = () => this.props.navigation.navigate('Registration');
 
     render() {
-        const {model} = this.state;
-        const {isLoader} = this.props;
+        const {isLoader, authWithFacebook, authWithGoogle} = this.props;
         const props = {
             isLoader,
-            model,
             onSignInPress: this.onSignInPress,
-            onFacebookSignInPress: this.onFacebookSignInPress,
-            onModelChange: this.onModelChange,
-            onGoogleSignInPress: this.onGoogleSignInPress,
+            onFacebookSignInPress: authWithFacebook,
+            onGoogleSignInPress: authWithGoogle,
             onSignUpPress: this.onSignUpPress
         };
+
         return (<LoginScreen {...props} />);
     }
 }

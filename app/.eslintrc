@@ -33,6 +33,8 @@
     "react/require-default-props": "off",
     "react/no-array-index-key": "warn",
     "import/prefer-default-export": "warn",
+    "react-native/no-inline-styles": "off",
+    "no-invalid-this": "off",
     "semi": "error"
   }
 }

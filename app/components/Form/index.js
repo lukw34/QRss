@@ -1,51 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {View} from 'react-native';
+import {Field} from 'redux-form';
 
-import IconInput from '../IconInput';
 
-class Form extends React.Component {
-    static propTypes = {
-        model: PropTypes.shape({}),
-        onModelChange: PropTypes.func.isRequired
+const GenerateForm = (SubmitButton, buttonProps) => {
+    const Form = ({config = []}) => (
+        <View style={{flex: 1}}>
+            <View style={{flex: 3}}>
+                {config.map(element => (<Field
+                    key={element.name}
+                    {...element}
+                />))
+                }
+            </View>
+            <View style={{flex: 1}}>
+                <SubmitButton {...buttonProps} />
+            </View>
+        </View>
+    );
+
+    Form.propTypes = {
+        config: PropTypes.arrayOf(PropTypes.shape({}))
     };
 
-    static mapFields = {
-        'icon-input': IconInput
-    };
+    return Form;
+};
 
-
-    static defaultProps = {
-        model: []
-    };
-
-    mapConfigToFields() {
-        const {model, onModelChange} = this.props;
-        return Object.keys(model).map(key => {
-            const element = model[key];
-            const FormInput = Form.mapFields[element.inputType];
-            if (FormInput) {
-                return (
-                    <FormInput
-                        {...element}
-                        onModelChange={onModelChange}
-                        key={key}
-                        modelKey={key}
-                    />
-                );
-            }
-
-            return null;
-        });
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                {this.mapConfigToFields()}
-            </React.Fragment>
-        );
-    }
-
-}
-
-export default Form;
+export default GenerateForm;

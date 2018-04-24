@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button} from 'react-native-material-ui';
 import PropTypes from 'prop-types';
-import styles from './styles'
+import styles from './styles';
 
 const LoginButton = ({color, onPress, text, bordered, disabled}) => (<Button
     text={text}

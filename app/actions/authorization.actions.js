@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
 import {Facebook, Google} from 'expo';
 
 import {AUTHORIZATION_SUCCESS, AUTHORIZATION_FAILURE, SIGN_OUT} from '../constants/actions';
@@ -20,6 +20,18 @@ const signOut = () => ({
     type: SIGN_OUT
 });
 
+const updateDBUserInfo = (id, userData, callback) => firebase.database().ref(`users/${id}`).set(userData, callback);
+const getUserInfo = id => Fetch.fetching(`${ROOT_URL}/users/${id}.json`);
+const updateDataIfUserNotExist = ({email, id, photoURL}, callback) => getUserInfo(id).then(({body}) => {
+    if (body) {
+        callback(body);
+        return Promise.resolve(body);
+    }
+
+    updateDBUserInfo(id, {email, id, photoURL}, callback);
+    return Promise.resolve({email, id, photoURL});
+});
+
 const signInWithFacebook = () => dispatch => dispatch(fetch(Facebook.logInWithReadPermissionsAsync(FACEBOOK_APP_ID, {
     permissions: ['public_profile', 'email']
 })
@@ -31,19 +43,18 @@ const signInWithFacebook = () => dispatch => dispatch(fetch(Facebook.logInWithRe
 
         return Promise.reject(new Error('The user cancelled the request'));
 
-    })))
-    .then(({uid: id, email, photoURL}) => dispatch(onAuthorizationSuccess({
-        id,
-        email,
-        photoURL
-    })))
+    })
+    .then(({email, uid: id, photoURL}) => updateDataIfUserNotExist(
+        {id, email, photoURL},
+        () => dispatch(onAuthorizationSuccess({id, email, photoURL}))))))
     .catch(err => dispatch(onAuthorizationFailure(err)));
 
 
-const signInWithEmailAndPassword = ({email, password}) => dispatch => dispatch(fetch(firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(({uid}) => Fetch.fetching(`${ROOT_URL}/users/${uid}.json`))))
+const signInWithEmailAndPassword = ({email, password}) => dispatch => dispatch(fetch(
+    firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(({uid}) => Fetch.fetching(`${ROOT_URL}/users/${uid}.json`))))
     .then(({body: {id, email, photoURL}} = {}) => dispatch(onAuthorizationSuccess({
         id,
         email,
@@ -51,24 +62,24 @@ const signInWithEmailAndPassword = ({email, password}) => dispatch => dispatch(f
     })))
     .catch(err => dispatch(onAuthorizationFailure(err)));
 
-const signInWithGoogle = () => dispatch => dispatch(fetch(Google
-    .logInAsync({
-        androidClientId: ANDROID_CLIENT_ID,
-        iosClientId: '',
-        scopes: ['profile', 'email'],
-    })
-    .then(({accessToken, idToken}) => {
-        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
-        return firebase.auth().signInWithCredential(credential);
-    })))
+const signInWithGoogle = () => dispatch => dispatch(fetch(
+    Google
+        .logInAsync({
+            androidClientId: ANDROID_CLIENT_ID,
+            iosClientId: '',
+            scopes: ['profile', 'email'],
+        })
+        .then(({accessToken, idToken}) => {
+            const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+            return firebase.auth().signInWithCredential(credential);
+        })))
     .then(({uid: id, email, photoURL}) => dispatch(onAuthorizationSuccess({
         id,
         email,
         photoURL
     })))
     .catch(err => {
-        console.log(err);
-        dispatch(onAuthorizationFailure(err))
+        dispatch(onAuthorizationFailure(err));
     });
 
 const signOutCurrentUser = () => async dispatch => {
@@ -79,7 +90,15 @@ const signOutCurrentUser = () => async dispatch => {
     }
 };
 
+const createUserWithEmailAndPassword = ({email, password, photoURL = ' '}) => dispatch => dispatch(fetch(
+    firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(({uid}) => updateDBUserInfo(uid, {email, photoURL, rss: []}, () => {
+        }))));
+
 export {
+    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithFacebook,
     signInWithGoogle,

@@ -33,8 +33,8 @@ class HeaderRight extends React.Component {
             onPress={this.handlePress}
             icon='exit-to-app'
             text=''
-        />)
+        />);
     }
 }
 
-export default connect(null, mapDispatchToProps)(HeaderRight)
+export default connect(null, mapDispatchToProps)(HeaderRight);

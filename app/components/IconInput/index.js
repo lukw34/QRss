@@ -1,38 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, TextInput} from 'react-native';
+import {View, TextInput, Text} from 'react-native';
 import {Icon} from 'react-native-material-ui';
 
-import styles from './styles'
+import styles from './styles';
 
-const IconInput = ({icon, onModelChange, modelKey, value, keyboardType = 'default', password = false, placeholder}) => (
+const IconInput = ({icon, input, meta: {touched, error},password = false, placeholder}) => (
     <View style={styles.iconInputContainer}>
-        <View style={styles.iconInputIcon}>
-            <Icon
-                name={icon}
-                size={40}
+        <View style={styles.iconInput}>
+            <View style={styles.iconInputIcon}>
+                <Icon
+                    name={icon}
+                    size={40}
+                />
+            </View>
+            <TextInput
+                {...input}
+                style={styles.iconInputTextInput}
+                placeholder={placeholder}
+                secureTextEntry={password}
+                underlineColorAndroid='transparent'
             />
         </View>
-        <TextInput
-            style={styles.iconInputTextInput}
-            onChangeText={value => onModelChange(modelKey, value)}
-            value={value}
-            placeholder={placeholder}
-            secureTextEntry={password}
-            keyboardType={keyboardType}
-            editable
-            underlineColorAndroid='transparent'
-        />
+        {touched && error && <Text style={styles.iconInputError}>{error}</Text>}
     </View>
+
 );
 
 IconInput.propTypes = {
+    input:PropTypes.shape({}),
+    meta: PropTypes.shape({
+        touched: PropTypes.bool,
+        error: PropTypes.string
+    }),
     icon: PropTypes.string,
-    onModelChange: PropTypes.func,
     value: PropTypes.string,
-    modelKey: PropTypes.string,
-    keyboardType: PropTypes.string,
-    password: PropTypes.bool
+    password: PropTypes.bool,
+    placeholder: PropTypes.string
 };
 
 export default IconInput;

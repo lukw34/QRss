@@ -1,10 +1,10 @@
-import Home from './Login';
+import Login from './Login/index.android';
 import Main from './Main';
 import Registration from './Registration';
 
 const screensConfiguration = {
     login: {
-        screen: Home,
+        screen: Login,
         name: 'Login'
     },
     main: {

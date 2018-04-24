@@ -10,7 +10,7 @@ const fetch = request => dispatch => {
         .catch(err => {
             dispatch(popLoader());
             return Promise.reject(err);
-        })
+        });
 };
 
 export {

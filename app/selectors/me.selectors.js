@@ -13,8 +13,8 @@ const isErrorSelector = createSelector(
 );
 
 const isLogged = createSelector(
-  getMe,
-  me => !!me.id
+    getMe,
+    me => !!me.id
 );
 
 export {

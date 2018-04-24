@@ -12,7 +12,6 @@ class Map extends React.Component {
         try {
             this._getLocationAsync();
         } catch (e) {
-            console.log(e);
             ToastAndroid.showWithGravityAndOffset(
                 e.message,
                 ToastAndroid.SHORT,
@@ -26,7 +25,7 @@ class Map extends React.Component {
     _getLocationAsync = async () => {
         const {status} = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
-            throw new Error('Permission to access location was denied')
+            throw new Error('Permission to access location was denied');
         }
 
         const {coords: {latitude, longitude}} = await Location.getCurrentPositionAsync({});
@@ -41,8 +40,8 @@ class Map extends React.Component {
         return (<MapView
             style={{flex: 1}}
             initialRegion={{
-                latitude: latitude,
-                longitude: longitude,
+                latitude,
+                longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }}

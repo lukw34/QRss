@@ -1,8 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {View} from 'react-native';
+import {connect} from 'react-redux';
+
 import styles from './styles';
-import Form from '../../components/Form';
+import RegistrationForm from './RegistrationForm';
+import {createUserWithEmailAndPassword} from "../../actions/authorization.actions";
+import {isLoaderSelector} from '../../selectors/loader.selectors';
+
+
+const mapDispatchToProps = dispatch => ({
+    createUser: userData => dispatch(createUserWithEmailAndPassword(userData))
+});
+
+const mapStateToProps = state => ({
+    isLoader: isLoaderSelector(state)
+});
 
 class Registration extends React.Component {
     static navigationOptions = () => ({
@@ -10,77 +23,31 @@ class Registration extends React.Component {
     });
 
     static propTypes = {
-        navigation: PropTypes.shape({
-            navigate: PropTypes.func
-        }).isRequired,
+        isLoader: PropTypes.bool,
+        createUser: PropTypes.func
     };
 
-    initModel = {
-        email: {
-            value: '',
-            password: true,
-            placeholder: 'User email',
-            inputType: 'icon-input',
-            icon: 'person',
-            keyboardType: 'email-address'
-        },
-        password: {
-            value: '',
-            password: true,
-            icon: 'lock',
-            placeholder: 'Password',
-            inputType: 'icon-input'
-        },
-        repassword: {
-            value: '',
-            password: true,
-            icon: 'lock',
-            placeholder: 'Type password again',
-            inputType: 'icon-input'
-        }
+    onSubmit = ({email, password, photoURL}) => {
+        this.props.createUser({email, password, photoURL});
     };
-
-    constructor(props) {
-        super(props);
-        this.onModelChange = this.onModelChange.bind(this);
-    }
-
-
-    state = {
-        model: this.initModel
-    };
-
-    onModelChange(key, value) {
-        const {model} = this.state;
-        const modelValue = model[key] || {};
-        this.setState({
-            model: {
-                ...model,
-                [key]: {
-                    ...modelValue,
-                    value
-                }
-            }
-        });
-    }
-
 
     render() {
-        const {model} = this.state;
-
+        const {isLoader} = this.props;
         return (
             <View style={styles.registrationScreenContainer}>
+                <View style={{flex: 1}} />
                 <View style={{flex: 6}}>
-                </View>
-                <View style={{flex: 4}}>
-                    <Form
-                        onModelChange={this.onModelChange}
-                        model={model}
+                    <RegistrationForm
+                        onSubmit={this.onSubmit}
+                        isLoader={isLoader}
                     />
                 </View>
+                <View
+                    style={{flex: 3}}
+                />
             </View>
         );
     }
 }
 
-export default Registration;
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);
