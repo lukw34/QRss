@@ -6,14 +6,14 @@ import {fetch} from './fetch.actions';
 import Fetch from '../utils/Fetch';
 import {ROOT_URL, FACEBOOK_APP_ID, ANDROID_CLIENT_ID} from '../constants';
 
-const onAuthorizationSuccess = (me) => ({
-    type: AUTHORIZATION_SUCCESS,
-    me
-});
-
 const onAuthorizationFailure = (err) => ({
     type: AUTHORIZATION_FAILURE,
     err
+});
+
+const onAuthorizationSuccess = (me) => ({
+    type: AUTHORIZATION_SUCCESS,
+    me
 });
 
 const signOut = () => ({
@@ -31,6 +31,10 @@ const updateDataIfUserNotExist = ({email, id, photoURL}, callback) => getUserInf
     updateDBUserInfo(id, {email, id, photoURL}, callback);
     return Promise.resolve({email, id, photoURL});
 });
+
+const getUserInfoWithFetch = id => dispatch => dispatch(fetch(getUserInfo(id)));
+const setActiveUser = id => dispatch => dispatch(getUserInfoWithFetch(id))
+    .then(({body: user}) =>  dispatch(onAuthorizationSuccess(user)));
 
 const signInWithFacebook = () => dispatch => dispatch(fetch(Facebook.logInWithReadPermissionsAsync(FACEBOOK_APP_ID, {
     permissions: ['public_profile', 'email']
@@ -55,11 +59,6 @@ const signInWithEmailAndPassword = ({email, password}) => dispatch => dispatch(f
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(({uid}) => Fetch.fetching(`${ROOT_URL}/users/${uid}.json`))))
-    .then(({body: {id, email, photoURL}} = {}) => dispatch(onAuthorizationSuccess({
-        id,
-        email,
-        photoURL
-    })))
     .catch(err => dispatch(onAuthorizationFailure(err)));
 
 const signInWithGoogle = () => dispatch => dispatch(fetch(
@@ -94,10 +93,11 @@ const createUserWithEmailAndPassword = ({email, password, photoURL = ' '}) => di
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(({uid}) => updateDBUserInfo(uid, {email, photoURL, rss: []}, () => {
-        }))));
+        .then(({uid}) => updateDBUserInfo(uid, {email, photoURL, rss: []}, () => Promise.resolve()))));
 
 export {
+    setActiveUser,
+    getUserInfoWithFetch,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithFacebook,

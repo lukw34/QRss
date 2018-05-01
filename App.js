@@ -3,10 +3,12 @@ import Root from './app/components/Root';
 import {ThemeProvider} from 'react-native-material-ui'
 import firebase from 'firebase';
 import {Provider} from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import {withNavigation} from 'react-navigation';
 
 import variables from './app/variables';
 import store from './app/store';
+
+console.disableYellowBox = true;
 
 const uiTheme = {
     palette: {
@@ -28,11 +30,11 @@ class App extends React.Component {
 
     render() {
         return (
-            <ThemeProvider uiTheme={uiTheme}>
-                <Provider store={store}>
+            <Provider store={store}>
+                <ThemeProvider uiTheme={uiTheme}>
                     <Root/>
-                </Provider>
-            </ThemeProvider>
+                </ThemeProvider>
+            </Provider>
         );
     }
 }

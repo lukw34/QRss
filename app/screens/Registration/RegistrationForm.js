@@ -7,6 +7,7 @@ import LoginButton from '../../components/SubmitButton';
 import GenerateForm from '../../components/Form';
 import {requiredValidation, emailValidation, shouldBeEqual} from '../../utils/validators';
 import IconInput from '../../components/IconInput';
+import ImageInput from '../../components/ImageInput';
 
 class RegistrationForm extends React.Component {
     static propTypes = {
@@ -53,6 +54,10 @@ class RegistrationForm extends React.Component {
         validate: [
             requiredValidation
         ]
+    }, {
+        name: 'photoURL',
+        component: ImageInput
+
     }];
 
     render() {

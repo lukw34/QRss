@@ -1,14 +1,47 @@
 import React from 'react';
-import {View, Text,} from 'react-native';
+import {View} from 'react-native';
+import {ActionButton} from 'react-native-material-ui';
+import {Permissions} from 'expo';
+import PropTypes from 'prop-types';
 
 class Dashboard extends React.Component {
+
+    static propTypes = {
+        rootNavigateTo: PropTypes.func
+    };
+
+    state = {
+        hasCameraPermission: null,
+    };
+
+    componentDidMount() {
+        this.requestCameraPermission();
+    }
+
+    requestCameraPermission = async () => {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({
+            hasCameraPermission: status === 'granted',
+        });
+    };
+
+    readBarCode = () => {
+        const {hasCameraPermission} = this.state;
+        if (hasCameraPermission) {
+            this.props.rootNavigateTo('Scanner');
+        }
+    };
+
     render() {
         return (
-            <View>
-                <View/>
-                <View>
-                    <Text>asdsad </Text>
-                </View>
+            <View style={{
+                flex: 1
+            }}
+            >
+                <ActionButton
+                    icon='camera'
+                    onPress={this.readBarCode}
+                />
             </View>
         );
     }

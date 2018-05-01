@@ -8,9 +8,9 @@ import NewQRss from './NewQRss';
 
 const TabNavigatorComp = TabNavigator(
     {
-        NewQRss: {screen: NewQRss},
-        Dashboard: {screen: Dashboard},
-        RSSMap: {screen: Map}
+        Dashboard: {screen: SessionWrapper(Dashboard)},
+        NewQRss: {screen: SessionWrapper(NewQRss)},
+        RSSMap: {screen: SessionWrapper(Map)}
     }, {
         tabBarPosition: 'bottom',
         tabBarOptions: {
@@ -27,4 +27,4 @@ const TabNavigatorComp = TabNavigator(
         }
     })
 ;
-export default SessionWrapper(TabNavigatorComp);
+export default TabNavigatorComp;

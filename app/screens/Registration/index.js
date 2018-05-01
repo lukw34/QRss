@@ -36,15 +36,12 @@ class Registration extends React.Component {
         return (
             <View style={styles.registrationScreenContainer}>
                 <View style={{flex: 1}} />
-                <View style={{flex: 6}}>
+                <View style={{flex: 7}}>
                     <RegistrationForm
                         onSubmit={this.onSubmit}
                         isLoader={isLoader}
                     />
                 </View>
-                <View
-                    style={{flex: 3}}
-                />
             </View>
         );
     }

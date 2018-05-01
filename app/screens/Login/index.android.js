@@ -11,7 +11,7 @@ import {
     signInWithEmailAndPassword,
     signInWithFacebook,
     signInWithGoogle,
-    onAuthorizationSuccess
+    setActiveUser
 } from '../../actions/authorization.actions';
 
 const mapStateToProps = (state) => ({
@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
     authWithEmailAndPassword: (email, password) => dispatch(signInWithEmailAndPassword({email, password})),
     authWithFacebook: () => dispatch(signInWithFacebook()),
     authWithGoogle: () => dispatch(signInWithGoogle()),
-    setMe: me => dispatch(onAuthorizationSuccess(me))
+    setMe: me => dispatch(setActiveUser(me))
 });
 
 class Login extends React.Component {
@@ -50,10 +50,7 @@ class Login extends React.Component {
     componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                const {uid: id, email, photoURL} = user;
-                this.props.setMe({
-                    id, email, photoURL
-                });
+                const {uid: id} = user;
                 ToastAndroid.showWithGravityAndOffset(
                     'You are logged to application!',
                     ToastAndroid.LONG,
@@ -61,7 +58,7 @@ class Login extends React.Component {
                     0,
                     150
                 );
-                this.props.navigation.navigate('Main');
+                this.props.setMe(id).then(() =>  this.props.navigation.navigate('Main'));
             }
         });
     }

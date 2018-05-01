@@ -9,7 +9,7 @@ const LoginButton = ({color, onPress, text, bordered, disabled}) => (<Button
     disabled={disabled}
     onPress={onPress}
     style={{
-        container: [styles.containerLoginButton, {backgroundColor: color}, bordered && styles.containerLoginButtonBordered],
+        container: [styles.containerLoginButton, color && {backgroundColor: color}, bordered && styles.containerLoginButtonBordered],
         text: styles.containerLoginButtonText
     }}
 />);

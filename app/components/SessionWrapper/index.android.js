@@ -49,9 +49,14 @@ const HOCWrapper = (Screen) => class ScreenWrapper extends React.Component {
         this.authSubscription();
     }
 
+    rootNavigateTo = screenName => this.props.navigation.navigate(screenName);
 
     render() {
-        return (<Screen />);
+        return (
+            <Screen
+                {...this.props}
+                rootNavigateTo={this.rootNavigateTo}
+            />);
     }
 };
 

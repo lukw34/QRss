@@ -15,7 +15,7 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         flexDirection: 'row',
         minHeight: 57,
-        maxHeight: 70
+        maxHeight: 65
     },
     iconInputError: {
         padding: 5,

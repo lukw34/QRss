@@ -8,7 +8,14 @@ import styles from './styles';
 const Root = () => (
     <View style={styles.rootContainer}>
         <Navigator
-            scenes={['login', 'main', 'registration']}
+            scenes={[
+                'login',
+                'main',
+                'registration',
+                'scanner',
+                'board',
+                'boardLoader'
+            ]}
         />
     </View>
 );

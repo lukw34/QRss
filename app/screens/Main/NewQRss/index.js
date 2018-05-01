@@ -1,28 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View} from 'react-native';
+import {View, Modal} from 'react-native';
 import {connect} from 'react-redux';
 
+import {createBoard} from '../../../actions/boards.actions';
+import {pushLoader, popLoader} from '../../../actions/loader.actions';
+import {generateId} from '../../../utils/utils';
 import styles from './styles';
 import CreateQRssForm from './CreateQRssForm';
 import {isLoaderSelector} from '../../../selectors/loader.selectors';
-
+import QRGenerator from '../../../components/QRGenerator/index.android';
 
 const mapStateToProps = state => ({
     isLoader: isLoaderSelector(state)
+});
+const mapDispatchToProps = dispatch => ({
+    createNewQRss: data => dispatch(createBoard(data)),
+    startLoader: () => dispatch(pushLoader()),
+    stopLoader: () => dispatch(popLoader())
 });
 
 class NewQRss extends React.Component {
 
     static propTypes = {
-        isLoader: PropTypes.bool
+        isLoader: PropTypes.bool,
+        createNewQRss: PropTypes.func,
+        startLoader: PropTypes.func,
+        stopLoader: PropTypes.func
     };
 
-    onSubmit = () => {
+    state = {
+        modalVisible: false,
+        modalData: {}
+    };
+
+    onRequestClose = () => {
+        this.setState({
+            modalVisible: false
+        });
+    };
+
+    onSubmit = (data) => {
+        this.setState({
+            modalVisible: true,
+            modalData: {
+                ...data,
+                id: generateId()
+            }
+        });
     };
 
     render() {
-        const {isLoader} = this.props;
+        const {isLoader, createNewQRss, startLoader, stopLoader} = this.props;
+        const {modalData, modalVisible} = this.state;
+        const generatorProps = {
+            createRequest: createNewQRss,
+            closeModal: this.onRequestClose,
+            isLoader,
+            stopLoader,
+            startLoader,
+            ...modalData
+        };
         return (
             <View style={styles.QRssScreenContainer}>
                 <View style={{flex: 9}}>
@@ -34,9 +72,17 @@ class NewQRss extends React.Component {
                 <View
                     style={{flex: 1}}
                 />
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={modalVisible}
+                    onRequestClose={this.onRequestClose}
+                >
+                    <QRGenerator {...generatorProps} />
+                </Modal>
             </View>
         );
     }
 }
 
-export default connect(mapStateToProps)(NewQRss);
+export default connect(mapStateToProps, mapDispatchToProps)(NewQRss);
