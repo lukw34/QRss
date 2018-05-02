@@ -3,7 +3,7 @@ import {Button} from 'react-native-material-ui';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
-const LoginButton = ({color, onPress, text, bordered, disabled}) => (<Button
+const SubmitButton = ({color, onPress, text, bordered, disabled}) => (<Button
     text={text}
     raised
     disabled={disabled}
@@ -14,7 +14,7 @@ const LoginButton = ({color, onPress, text, bordered, disabled}) => (<Button
     }}
 />);
 
-LoginButton.propTypes = {
+SubmitButton.propTypes = {
     color: PropTypes.string,
     onPress: PropTypes.func,
     text: PropTypes.string,
@@ -22,4 +22,4 @@ LoginButton.propTypes = {
     disabled: PropTypes.bool
 };
 
-export default LoginButton;
+export default SubmitButton;

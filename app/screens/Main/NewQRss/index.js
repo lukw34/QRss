@@ -63,15 +63,12 @@ class NewQRss extends React.Component {
         };
         return (
             <View style={styles.QRssScreenContainer}>
-                <View style={{flex: 9}}>
+                <View style={{flex: 1}}>
                     <CreateQRssForm
                         onSubmit={this.onSubmit}
                         isLoader={isLoader}
                     />
                 </View>
-                <View
-                    style={{flex: 1}}
-                />
                 <Modal
                     animationType="slide"
                     transparent={false}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import GeoLocation from '../../../components/GeoLocationInput';
 import TextInput from '../../../components/TextInput';
+import ImageInput from '../../../components/ImageInput';
 import variables from '../../../variables';
 import SubmitButton from '../../../components/SubmitButton';
 import GenerateForm from '../../../components/Form';
@@ -34,13 +35,17 @@ class CreateQRssForm extends React.Component {
         validate: [
             requiredValidation,
         ]
-    },{
+    }, {
         name: 'geolocation',
         placeholder: 'QRss Geolocation',
         component: GeoLocation,
         validate: [
             requiredValidation,
         ]
+    }, {
+        name: 'image',
+        placeholder: 'QRss image',
+        component: ImageInput
     }];
 
     render() {

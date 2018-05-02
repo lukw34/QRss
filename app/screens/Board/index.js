@@ -1,15 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, FlatList, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {Subheader, Button, ListItem, ActionButton} from 'react-native-material-ui';
+import {Button} from 'react-native-material-ui';
 
-import {messagesCount, messagesSelector} from '../../selectors/board.selector';
+import BoardComponent from './Board.component';
+import {messagesCount, messagesSelector} from '../../selectors/messages.selectors';
+import {isAvailableSubscription, isBoardSubscribed} from '../../selectors/me.selectors';
+import {isLoaderSelector} from '../../selectors/loader.selectors';
 import variables from '../../variables';
+import {updateBoardMessages, subscribeBoard} from '../../actions/boards.actions';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
     messages: messagesSelector(state),
-    count: messagesCount(state)
+    count: messagesCount(state),
+    isSubscribed: isBoardSubscribed(state, props),
+    isSubscriptionActive: isAvailableSubscription(state),
+    isLoader: isLoaderSelector(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+    sendMessage: (boardId, message) => dispatch(updateBoardMessages(boardId, message)),
+    subscribeThisBoard: (board, count) => dispatch(subscribeBoard(board, count))
 });
 
 class Board extends React.Component {
@@ -51,76 +62,77 @@ class Board extends React.Component {
             navigate: PropTypes.func,
             state: PropTypes.shape({
                 params: PropTypes.shape({
-                    boardId: PropTypes.string,
+                    id: PropTypes.string,
                     name: PropTypes.string,
-                    description: PropTypes.string
+                    description: PropTypes.string,
+                    image: PropTypes.string
                 })
             })
         }),
-        messages: PropTypes.arrayOf(PropTypes.shape({}))
+        count: PropTypes.number,
+        isSubscribed: PropTypes.bool,
+        isSubscriptionActive: PropTypes.bool,
+        subscribeThisBoard: PropTypes.func,
+        messages: PropTypes.arrayOf(PropTypes.shape({})),
+        sendMessage: PropTypes.func,
+        isLoader: PropTypes.bool
     };
 
-    onActionButtonPress = () => {
+    state = {
+        modalVisible: false
+    };
 
+    onSubmit = (data) => {
+        const {navigation: {state: {params: {id}}}, sendMessage} = this.props;
+        sendMessage(id, data).then(() => {
+            this.closeModal();
+        });
+    };
+
+    onActionButtonPress = () => this.setState({
+        modalVisible: true
+    });
+
+    closeModal = () => this.setState({
+        modalVisible: false
+    });
+
+    subscribeBoard = () => {
+        const {
+            isSubscriptionActive,
+            subscribeThisBoard,
+            count,
+            isSubscribed,
+            navigation: {state: {params: {id: boardId, name, description, image}}}
+        } = this.props;
+
+        if(isSubscriptionActive && !isSubscribed) {
+            subscribeThisBoard({
+                boardId,
+                name,
+                description,
+                image
+            }, count);
+        }
     };
 
     render() {
-        const {navigation: {state: {params: {description}}}, messages} = this.props;
-        return (
-            <View style={{
-                flex: 1,
-                backgroundColor: variables.primary
-            }}
-            >
-                <View style={{
-                    flex: 1,
-                    justifyContent: 'center'
-                }}
-                >
-                    <Subheader
-                        lines={2}
-                        text={description}
-                        style={{
-                            text: {
-                                color: variables.accentColor,
-                                textAlign: 'center',
-                                fontSize: 20
-                            }
-                        }}
-                    />
-                </View>
-                <View style={{
-                    flex: 9
-                }}
-                >
-                    <FlatList
-                        data={messages}
-                        renderItem={({item: {author, avatar: uri, description, title} = {}}) => (
-                            <ListItem
-                                divider
-                                centerElement={{
-                                    secondaryText: author,
-                                    primaryText: title,
-                                    tertiaryText: description
-                                }}
-                                leftElement={<Image
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                        borderRadius: 25,
-                                    }}
-                                    source={{uri}}
-                                />}
-                            />)}
-                    />
-                </View>
-                <ActionButton
-                    icon='add'
-                    onPress={this.onActionButtonPress}
-                />
-            </View>
-        );
+        const {navigation: {state: {params: {description,}}}, messages, isSubscriptionActive, isLoader, isSubscribed} = this.props;
+        const {modalVisible} = this.state;
+        const props = {
+            modalVisible,
+            isSubscribed,
+            isLoader,
+            description,
+            isSubscriptionActive,
+            messages,
+            subscribeBoard: this.subscribeBoard,
+            closeModal: this.closeModal,
+            onActionButtonPress: this.onActionButtonPress,
+            onSubmit: this.onSubmit
+        };
+        return (<BoardComponent {...props} />);
     }
 }
 
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

@@ -56,8 +56,10 @@ class RegistrationForm extends React.Component {
         ]
     }, {
         name: 'photoURL',
-        component: ImageInput
-
+        component: ImageInput,
+        validate: [
+            requiredValidation
+        ]
     }];
 
     render() {

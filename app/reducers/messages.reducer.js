@@ -1,5 +1,5 @@
 import {createReducer} from '../utils/reducers';
-import {INIT_BOARD, ADD_MESSAGE} from '../constants/actions';
+import {INIT_MESSAGES, ADD_MESSAGE} from '../constants/actions';
 
 const initState = [];
 
@@ -11,6 +11,6 @@ const initBoard = (state = initState, {messages}) => [
 const addMessage = (state = initState, {message}) => [...state, message];
 
 export default createReducer(initState, {
-    [INIT_BOARD]: initBoard,
+    [INIT_MESSAGES]: initBoard,
     [ADD_MESSAGE]: addMessage
 });

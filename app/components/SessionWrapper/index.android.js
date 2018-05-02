@@ -49,7 +49,7 @@ const HOCWrapper = (Screen) => class ScreenWrapper extends React.Component {
         this.authSubscription();
     }
 
-    rootNavigateTo = screenName => this.props.navigation.navigate(screenName);
+    rootNavigateTo = (screenName, params ={}) => this.props.navigation.navigate(screenName, params);
 
     render() {
         return (

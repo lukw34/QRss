@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import {ActionButton} from 'react-native-material-ui';
 import {Permissions} from 'expo';
 import PropTypes from 'prop-types';
+import DonutGraph from '../../../components/DonutGraph';
 
 class Dashboard extends React.Component {
 
@@ -28,9 +29,10 @@ class Dashboard extends React.Component {
     readBarCode = () => {
         const {hasCameraPermission} = this.state;
         if (hasCameraPermission) {
-            this.props.rootNavigateTo('Scanner');
+            this.props.rootNavigateTo('BoardLoader', {boardId: 'AKy56gNYzLp27AE'});
         }
     };
+
 
     render() {
         return (
@@ -38,6 +40,7 @@ class Dashboard extends React.Component {
                 flex: 1
             }}
             >
+                <DonutGraph />
                 <ActionButton
                     icon='camera'
                     onPress={this.readBarCode}

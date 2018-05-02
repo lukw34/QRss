@@ -39,7 +39,13 @@ const downloadImage = async url => {
     }
 };
 
+const setDataToFirebase = (path, data) => new Promise(resolve => firebase
+    .database()
+    .ref(path)
+    .set(data, () => resolve()));
+
 export {
+    setDataToFirebase,
     downloadImage,
     uploadImage,
     generateId
