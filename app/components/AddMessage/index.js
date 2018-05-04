@@ -21,32 +21,33 @@ class AddMessage extends React.Component {
         name: 'title',
         type: 'text',
         placeholder: 'Message Title',
-        component: TextInput,
-        validate: [
-            requiredValidation,
-        ]
+        component: TextInput
     }, {
         name: 'description',
         type: 'text',
         placeholder: 'Message Description',
         component: TextInput,
         multiline: true,
-        maxLength: 70,
-        validate: [
-            requiredValidation,
-        ]
+        maxLength: 70
     }];
 
-    render() {
-        const {isLoader, submit, closeModal} = this.props;
+
+    constructor(props) {
+        super(props);
+        const {submit} = props;
         const buttonProps = {
             color: variables.accentColor,
             raised: true,
             onPress: submit,
-            disabled: isLoader,
             text: 'Add Message'
         };
-        const Form = GenerateForm(SubmitButton, buttonProps);
+
+        this.formComponent = GenerateForm(SubmitButton, buttonProps);
+    }
+
+    render() {
+        const {isLoader, closeModal} = this.props;
+        const Form = this.formComponent;
         return (
             <View style={{
                 flex: 1,

@@ -1,5 +1,5 @@
 import Login from './Login/index.android';
-import Main from './Main';
+import Main from './Main/index';
 import Registration from './Registration';
 import Scanner from './Scanner';
 import Board from './Board';

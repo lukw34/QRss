@@ -62,19 +62,25 @@ class RegistrationForm extends React.Component {
         ]
     }];
 
-    render() {
-        const {isLoader, submit} = this.props;
+    constructor(props) {
+        super(props);
+        const {submit} = props;
         const buttonProps = {
             color: variables.accentColor,
             raised: true,
-            bordered: true,
             onPress: submit,
-            disabled: isLoader,
             text: 'Sign Up'
         };
-        const Form = GenerateForm(LoginButton, buttonProps);
+
+        this.formComponent = GenerateForm(LoginButton, buttonProps);
+    }
+
+    render() {
+        const {isLoader} = this.props;
+        const Form = this.formComponent;
         return (
             <Form
+                isLoader={isLoader}
                 config={this.config}
             />
         );

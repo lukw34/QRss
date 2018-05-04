@@ -1,10 +1,12 @@
 import React from 'react';
 import {View, FlatList, Image} from 'react-native';
-import {ListItem, ActionButton} from 'react-native-material-ui';
+import {ListItem, ActionButton, Button, Badge} from 'react-native-material-ui';
 import PropTypes from 'prop-types';
+
+import {AVAILABLE_SUBSCRIPTIONS} from '../../../constants';
 import variables from '../../../variables';
 
-const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress}) => (
+const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress, onDeletePress}) => (
     <View style={{
         flex: 1,
         justifyContent: 'center',
@@ -13,7 +15,7 @@ const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress}) => (
     >
         <FlatList
             data={subscriptions}
-            renderItem={({item: {image: uri, id, description, name} = {}}) => (
+            renderItem={({item: {image: uri, id, description, name, readCounter = 0, messageCounter = 0} = {}}) => (
                 <ListItem
                     key={id}
                     divider
@@ -28,26 +30,50 @@ const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress}) => (
                             height: 150
                         },
                         tertiaryText: {
-                            fontSize: 18
+                            fontSize: 15
                         },
                         primaryText: {
-                            fontSize: 23
+                            fontSize: 20
                         },
                         leftElementContainer: {
-                            width: 100,
-                            padding: 10
+                            flex: 4,
+                            justifyContent: 'center'
+                        },
+                        centerElementContainer: {
+                            flex: 6
+                        },
+                        rightElementContainer: {
+                            flex: 3
                         }
                     }}
-                    leftElement={<Image
+                    rightElement={<Button
+                        text=''
+                        icon='delete'
+                        onPress={() => onDeletePress(id)}
                         style={{
-                            width: 85,
-                            height: 85,
+                            container: {
+                                flex: 1,
+                            }
                         }}
-                        source={{uri}}
                     />}
+                    leftElement={
+                        <View style={{
+                            padding: 8,
+                            margin: 8
+                        }}>
+                            <Badge text="3">
+                                <Image
+                                    style={{
+                                        width: 65,
+                                        height: 65
+                                    }}
+                                    source={{uri}}
+                                />
+                            </Badge>
+                        </View>}
                 />)}
         />
-        {subscriptions <= 0 && (
+        {AVAILABLE_SUBSCRIPTIONS > subscriptions && (
             <ActionButton
                 icon='camera'
                 onPress={goToScanner}

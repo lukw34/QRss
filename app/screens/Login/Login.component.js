@@ -3,13 +3,21 @@ import PropTypes from 'prop-types';
 import {View, Text, TouchableWithoutFeedback} from 'react-native';
 
 import LoginForm from './LoginForm';
+import Logo from '../../components/Logo';
 import variables from '../../variables';
 import LoginButton from '../../components/SubmitButton';
 import styles from './styles';
 
 const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoogleSignInPress, isLoader}) => (
     <View style={styles.loginScreenContainer}>
-        <View style={{flex: 3}} />
+        <View style={{
+            flex: 3,
+            flexDirection: 'row',
+            justifyContent: 'center'
+        }}
+        >
+            <Logo />
+        </View>
         <View style={{flex: 5}}>
             <LoginForm
                 onSubmit={onSignInPress}

@@ -17,6 +17,19 @@ class CreateQRssForm extends React.Component {
         submit: PropTypes.func
     };
 
+    constructor(props) {
+        super(props);
+        const {submit} = props;
+        const buttonProps = {
+            color: variables.accentColor,
+            raised: true,
+            onPress: submit,
+            text: 'Generate QR code'
+        };
+
+        this.formComponent = GenerateForm(SubmitButton, buttonProps);
+    }
+
     config = [{
         name: 'name',
         type: 'text',
@@ -48,22 +61,18 @@ class CreateQRssForm extends React.Component {
         component: ImageInput
     }];
 
+
     render() {
-        const {isLoader, submit} = this.props;
-        const buttonProps = {
-            color: variables.accentColor,
-            raised: true,
-            onPress: submit,
-            disabled: isLoader,
-            text: 'Generate QR code'
-        };
-        const Form = GenerateForm(SubmitButton, buttonProps);
+        const {isLoader} = this.props;
+        const Form = this.formComponent;
         return (
             <Form
+                isLoader={isLoader}
                 config={this.config}
             />
         );
     }
+
 }
 
 export default reduxForm({

@@ -14,6 +14,7 @@ const MyTextInput = ({input, meta: {touched, error}, multiline = false, password
             placeholder={placeholder}
             secureTextEntry={password}
             underlineColorAndroid={variables.lightPrimary}
+            onBlur={(evt) => input.onBlur(evt.nativeEvent.text)}
         />
         {touched && error && <Text style={styles.inputError}>{error}</Text>}
     </View>

@@ -5,7 +5,7 @@ import {Field} from 'redux-form';
 
 
 const GenerateForm = (SubmitButton, buttonProps) => {
-    const Form = ({config = []}) => (
+    const Form = ({config = [], isLoader}) => (
         <View style={{flex: 1}}>
             <View style={{flex: 3}}>
                 {config.map(element => (<Field
@@ -15,12 +15,16 @@ const GenerateForm = (SubmitButton, buttonProps) => {
                 }
             </View>
             <View style={{flex: 1}}>
-                <SubmitButton {...buttonProps} />
+                <SubmitButton
+                    {...buttonProps}
+                    isLaoder={isLoader}
+                />
             </View>
         </View>
     );
 
     Form.propTypes = {
+        isLoader: PropTypes.bool,
         config: PropTypes.arrayOf(PropTypes.shape({}))
     };
 

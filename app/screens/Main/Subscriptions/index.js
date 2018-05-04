@@ -4,31 +4,51 @@ import PropTypes from 'prop-types';
 
 import {subscriptionSelector} from '../../../selectors/me.selectors';
 import SubscriptionComponent from './Subscriptions.component';
+import {getSubscribeBoardMessagesCounter, deleteBoardFromMe} from '../../../actions/boards.actions';
 
 const mapStateToProps = state => ({
     subscriptions: subscriptionSelector(state)
 });
 
+const mapDispatchToProps = dispatch => ({
+    getMessagesCounters: id => dispatch(getSubscribeBoardMessagesCounter(id)),
+    removeSubscriptions: id => dispatch(deleteBoardFromMe(id))
+});
+
 class Subscriptions extends React.Component {
 
     static propTypes = {
-        rootNavigateTo: PropTypes.func,
-        subscriptions: PropTypes.arrayOf(PropTypes.shape({}))
+        screenProps: PropTypes.shape({
+            rootNavigateTo: PropTypes.func
+        }),
+        subscriptions: PropTypes.arrayOf(PropTypes.shape({})),
+        getMessagesCounters: PropTypes.func,
+        removeSubscriptions: PropTypes.func
     };
 
-    onItemPress = boardId => this.props.rootNavigateTo('BoardLoader', {boardId});
+    componentDidMount() {
+        const {subscriptions, getMessagesCounters} = this.props;
+        try {
+            subscriptions.forEach(({id}) => getMessagesCounters(id))
+        } catch (e) {
+            //handle catch
+        }
+    }
 
-    goToScanner = () => this.props.rootNavigateTo('Scanner');
+    onItemPress = boardId => this.props.screenProps.rootNavigateTo('BoardLoader', {boardId});
+
+    goToScanner = () => this.props.screenProps.rootNavigateTo('Scanner');
 
     render() {
-        const {subscriptions} = this.props;
+        const {subscriptions, removeSubscriptions} = this.props;
         const props = {
             goToScanner: this.goToScanner,
             subscriptions,
+            onDeletePress: removeSubscriptions,
             onItemPress: this.onItemPress
         };
         return (<SubscriptionComponent {...props} />);
     }
 }
 
-export default connect(mapStateToProps)(Subscriptions);
+export default connect(mapStateToProps, mapDispatchToProps)(Subscriptions);

@@ -16,7 +16,7 @@ const getBoards = ({me: {me: {boards}}}) => boards;
 
 const subscriptionSelector = createSelector(
     getBoards,
-    boards => Object.keys(boards).map(key => (boards[key]))
+    boards => Object.keys(boards).map(key => boards[key]).filter(val => !!val)
 );
 
 const getSubscriptionsCount = createSelector(

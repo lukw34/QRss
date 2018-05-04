@@ -3,12 +3,11 @@ import {INIT_MESSAGES, ADD_MESSAGE} from '../constants/actions';
 
 const initState = [];
 
-const initBoard = (state = initState, {messages}) => [
-    ...state,
+const initBoard = (_, {messages}) => [
     ...messages
 ];
 
-const addMessage = (state = initState, {message}) => [...state, message];
+const addMessage = (state = initState, {message}) => [message, ...state];
 
 export default createReducer(initState, {
     [INIT_MESSAGES]: initBoard,

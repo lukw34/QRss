@@ -103,7 +103,7 @@ class Board extends React.Component {
             subscribeThisBoard,
             count,
             isSubscribed,
-            navigation: {state: {params: {id: boardId, name, description, image}}}
+            navigation: {state: {params: {id: boardId, name, description, image, urlQR}}}
         } = this.props;
 
         if(isSubscriptionActive && !isSubscribed) {
@@ -111,7 +111,7 @@ class Board extends React.Component {
                 boardId,
                 name,
                 description,
-                image
+                image: image || urlQR
             }, count);
         }
     };
@@ -131,6 +131,7 @@ class Board extends React.Component {
             onActionButtonPress: this.onActionButtonPress,
             onSubmit: this.onSubmit
         };
+
         return (<BoardComponent {...props} />);
     }
 }

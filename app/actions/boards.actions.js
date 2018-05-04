@@ -3,7 +3,14 @@ import {popLoader, pushLoader} from './loader.actions';
 import Fetch from '../utils/Fetch';
 import {ROOT_URL} from '../constants';
 import {fetch} from './fetch.actions';
-import {INIT_MESSAGES, ADD_MESSAGE, SUBSCRIBE_BOARD,INIT_BOARDS} from '../constants/actions';
+import {
+    INIT_MESSAGES,
+    UNSUBSCRIBE_BOARD,
+    ADD_MESSAGE,
+    SUBSCRIBE_BOARD,
+    INIT_BOARDS,
+    UPDATE_MESSAGE_COUNTER
+} from '../constants/actions';
 import {generateId, setDataToFirebase} from '../utils/utils';
 
 const initMessages = messages => ({
@@ -21,11 +28,21 @@ const updateBoardSubscriptionsToMe = board => ({
     board
 });
 
+const unsubscribeBoards = boardId => ({
+    type: UNSUBSCRIBE_BOARD,
+    boardId
+});
+
 const addMessage = message => ({
     type: ADD_MESSAGE,
     message
 });
 
+const updateMessageCounter = (boardId, messageCounter) => ({
+    type: UPDATE_MESSAGE_COUNTER,
+    messageCounter,
+    boardId
+});
 
 const createBoard = boardData => dispatch => {
     dispatch(pushLoader());
@@ -33,15 +50,28 @@ const createBoard = boardData => dispatch => {
         .set(boardData, () => dispatch(popLoader()));
 };
 
-const getBoard = id => async dispatch => {
+const getBoard = id => async (dispatch) => {
     const {body} = await dispatch(fetch(Fetch.fetching(`${ROOT_URL}/boards/${id}.json`)));
-    const {messages = {}, name, description} = body || {};
-    dispatch(initMessages(Object.keys(messages).map(key => ({
-        ...messages[key],
-        id: key,
-        key
-    }))));
-    return {name, description, id};
+    const {messages = {}, name, description, urlQR} = body || {};
+    dispatch(initMessages(Object.keys(messages)
+        .map(key => ({
+            ...messages[key],
+            id: key,
+            key
+        }))
+        .sort((a = '', b = '') => new Date(b.createdAt) - new Date(a.createdAt))));
+    return {name, description, id, urlQR};
+};
+
+const getSubscribeBoardMessagesCounter = boardId => async (dispatch, getState) => {
+    const {me: {me: {boards = {}}}} = getState();
+    const isSubscribedBoard = !!boards[boardId];
+    if (isSubscribedBoard) {
+        const {body} = await dispatch(fetch(Fetch.fetching(`${ROOT_URL}/boards/${boardId}/messages.json`)));
+        const respBody = body || {};
+        const messageCounter = Object.keys(respBody).length;
+        dispatch(updateMessageCounter(boardId, messageCounter));
+    }
 };
 
 const updateBoardMessages = (boardId, message) => (dispatch, getState) => {
@@ -50,7 +80,8 @@ const updateBoardMessages = (boardId, message) => (dispatch, getState) => {
     const messageWithAuthor = {
         ...message,
         author,
-        avatar
+        avatar,
+        createdAt: new Date().toISOString()
     };
 
     return dispatch(fetch(setDataToFirebase(`boards/${boardId}/messages/${id}`, messageWithAuthor)
@@ -64,7 +95,7 @@ const subscribeBoard = ({name, description, boardId, image}, messageCounter) => 
             name,
             id: boardId,
             description,
-            counter: messageCounter
+            readCounter: messageCounter
         }
     };
 
@@ -74,6 +105,14 @@ const subscribeBoard = ({name, description, boardId, image}, messageCounter) => 
 
     return dispatch(fetch(setDataToFirebase(`users/${id}/boards`, board)
         .then(() => dispatch(updateBoardSubscriptionsToMe(board)))));
+};
+
+const deleteBoardFromMe = boardId => async (dispatch, getState) => {
+    const {me: {me: {id}}} = getState();
+    await dispatch(fetch(Fetch.fetching(`${ROOT_URL}/users/${id}/boards/${boardId}.json`, {
+        method: 'DELETE'
+    })));
+    return dispatch(unsubscribeBoards(boardId));
 };
 
 const getAllBoards = () => async dispatch => {
@@ -89,6 +128,8 @@ const getAllBoards = () => async dispatch => {
 
 
 export {
+    deleteBoardFromMe,
+    getSubscribeBoardMessagesCounter,
     subscribeBoard,
     createBoard,
     getBoard,
