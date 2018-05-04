@@ -41,14 +41,13 @@ class DonutGraph extends React.Component {
     width = 150;
     height = 150;
     arcPath = arc().outerRadius(this.width / 2).innerRadius(this.width / 3);
-
     color = scaleOrdinal(schemeCategory10);
 
     render() {
         const {paths} = this.state;
         return (
             <Surface style={{display: 'flex', position: 'relative'}} width={this.width} height={this.height}>
-                <Group x={75} y={75}>
+                <Group x={this.width / 2} y={this.height / 2}>
                     {paths.map((d, index) => {
                         const [x, y] = this.arcPath.centroid(d);
                         const fill = this.color(d.data.name);

@@ -9,6 +9,7 @@ import {isAvailableSubscription, isBoardSubscribed} from '../../selectors/me.sel
 import {isLoaderSelector} from '../../selectors/loader.selectors';
 import variables from '../../variables';
 import {updateBoardMessages, subscribeBoard} from '../../actions/boards.actions';
+import styles from './styles';
 
 const mapStateToProps = (state, props) => ({
     messages: messagesSelector(state),
@@ -26,11 +27,7 @@ const mapDispatchToProps = dispatch => ({
 class Board extends React.Component {
 
     static navigationOptions = ({navigation: {state: {params: {name}}, navigate}}) => ({
-        headerStyle: {
-            backgroundColor: variables.darkPrimary,
-            borderBottomWidth: 4,
-            borderColor: variables.divider
-        },
+        headerStyle: styles.boardNavigatorHeaderStyle,
         headerTitleStyle: {
             color: 'white',
         },
@@ -78,24 +75,12 @@ class Board extends React.Component {
         isLoader: PropTypes.bool
     };
 
-    state = {
-        modalVisible: false
-    };
-
-    onSubmit = (data) => {
+    onSubmit = async (data) => {
         const {navigation: {state: {params: {id}}}, sendMessage} = this.props;
-        sendMessage(id, data).then(() => {
-            this.closeModal();
-        });
+        await sendMessage(id, data);
     };
 
-    onActionButtonPress = () => this.setState({
-        modalVisible: true
-    });
-
-    closeModal = () => this.setState({
-        modalVisible: false
-    });
+    onActionButtonPress = () => this.props.navigation.navigate('AddMessage', {onSubmit: this.onSubmit})
 
     subscribeBoard = () => {
         const {
@@ -106,7 +91,7 @@ class Board extends React.Component {
             navigation: {state: {params: {id: boardId, name, description, image, urlQR}}}
         } = this.props;
 
-        if(isSubscriptionActive && !isSubscribed) {
+        if (isSubscriptionActive && !isSubscribed) {
             subscribeThisBoard({
                 boardId,
                 name,
@@ -118,18 +103,14 @@ class Board extends React.Component {
 
     render() {
         const {navigation: {state: {params: {description,}}}, messages, isSubscriptionActive, isLoader, isSubscribed} = this.props;
-        const {modalVisible} = this.state;
         const props = {
-            modalVisible,
             isSubscribed,
             isLoader,
             description,
             isSubscriptionActive,
             messages,
             subscribeBoard: this.subscribeBoard,
-            closeModal: this.closeModal,
             onActionButtonPress: this.onActionButtonPress,
-            onSubmit: this.onSubmit
         };
 
         return (<BoardComponent {...props} />);

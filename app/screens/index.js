@@ -1,5 +1,6 @@
 import Login from './Login/index.android';
-import Main from './Main/index';
+import Main from './Main/index.android';
+import AddMessage from './AddMessage';
 import Registration from './Registration';
 import Scanner from './Scanner';
 import Board from './Board';
@@ -29,6 +30,10 @@ const screensConfiguration = {
     boardLoader: {
         screen: BoardLoader,
         name: 'BoardLoader'
+    },
+    addMessage: {
+        screen: AddMessage,
+        name: 'AddMessage'
     }
 };
 

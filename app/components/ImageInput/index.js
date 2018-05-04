@@ -58,13 +58,7 @@ class ImageInput extends React.Component {
                     }}
                     >
                         <Image
-                            style={{
-                                flex: 1,
-                                width: 125,
-                                height: 125,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
+                            style={styles.imageInputImage}
                             source={{uri}}
                         />
                         <ActionButton

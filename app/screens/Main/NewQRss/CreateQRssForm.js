@@ -5,9 +5,7 @@ import PropTypes from 'prop-types';
 import GeoLocation from '../../../components/GeoLocationInput';
 import TextInput from '../../../components/TextInput';
 import ImageInput from '../../../components/ImageInput';
-import variables from '../../../variables';
-import SubmitButton from '../../../components/SubmitButton';
-import GenerateForm from '../../../components/Form';
+import CommonForm from '../../../components/CommonForm';
 import {requiredValidation} from '../../../utils/validators';
 
 
@@ -16,19 +14,6 @@ class CreateQRssForm extends React.Component {
         isLoader: PropTypes.bool,
         submit: PropTypes.func
     };
-
-    constructor(props) {
-        super(props);
-        const {submit} = props;
-        const buttonProps = {
-            color: variables.accentColor,
-            raised: true,
-            onPress: submit,
-            text: 'Generate QR code'
-        };
-
-        this.formComponent = GenerateForm(SubmitButton, buttonProps);
-    }
 
     config = [{
         name: 'name',
@@ -63,12 +48,13 @@ class CreateQRssForm extends React.Component {
 
 
     render() {
-        const {isLoader} = this.props;
-        const Form = this.formComponent;
+        const {isLoader, submit,} = this.props;
         return (
-            <Form
-                isLoader={isLoader}
+            <CommonForm
                 config={this.config}
+                submit={submit}
+                submitText='Create QRss'
+                isLoader={isLoader}
             />
         );
     }

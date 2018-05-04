@@ -52,6 +52,38 @@ class Main extends React.Component {
             }
         });
 
+        await this.checkNotificationsPermissions();
+
+        this.subscribeBoard = firebase.database()
+            .ref('boards/AKy56gNYzLp27AE')
+            .on('child_changed', (snapshot) => {
+                if(snapshot) {
+                    this.handleMessageAdded(snapshot);
+                }
+            });
+    }
+
+    componentWillUnmount() {
+        this.authSubscription();
+    }
+
+    handleMessageAdded(snapshot) {
+        const data = snapshot.val();
+        if (typeof data === 'object') {
+            const [lastMessage] = Object.keys(data)
+                .map(key => data[key])
+                .filter(({createdAt}) => !!createdAt)
+                .sort((a = '', b = '') => new Date(b.createdAt) - new Date(a.createdAt));
+
+            const user = firebase.auth().currentUser;
+            const {email} = user || {};
+            if (lastMessage.author !== email) {
+                this.sendImmediateNotification();
+            }
+        }
+    }
+
+    async checkNotificationsPermissions() {
         const result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
         if (Constants.isDevice && result.status === 'granted') {
@@ -59,27 +91,9 @@ class Main extends React.Component {
                 accessToNotifications: true
             });
         }
-
-        this.subscribeBoard = firebase.database()
-            .ref('boards/AKy56gNYzLp27AE')
-            .on('child_changed', (snapshot) => {
-                const data = snapshot.val();
-                if (typeof snapshot === 'object') {
-                    const [lastMessage] = Object.keys(data)
-                        .map(key => data[key])
-                        .filter(({createdAt}) => !!createdAt)
-                        .sort((a = '', b = '') => new Date(b.createdAt) - new Date(a.createdAt));
-
-                    const user = firebase.auth().currentUser;
-                    const {email} = user || {};
-                    if (lastMessage.author !== email) {
-                        this._sendImmediateNotification();
-                    }
-                }
-            });
     }
 
-    _sendImmediateNotification() {
+    sendImmediateNotification() {
         const localNotification = {
             title: 'New message available in your subscriptions',
             data: {type: 'immediate'},

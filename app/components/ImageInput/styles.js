@@ -8,5 +8,12 @@ export default StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         flexDirection: 'row'
+    },
+    imageInputImage: {
+        flex: 1,
+        width: 125,
+        height: 125,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });

@@ -2,12 +2,10 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import PropTypes from 'prop-types';
 
-import variables from '../../variables';
-import LoginButton from '../../components/SubmitButton';
-import GenerateForm from '../../components/Form';
 import {requiredValidation, emailValidation, shouldBeEqual} from '../../utils/validators';
 import IconInput from '../../components/IconInput';
 import ImageInput from '../../components/ImageInput';
+import CommonForm from '../../components/CommonForm';
 
 class RegistrationForm extends React.Component {
     static propTypes = {
@@ -28,7 +26,7 @@ class RegistrationForm extends React.Component {
     config = [{
         name: 'email',
         type: 'email',
-        placeholder: 'User email',
+        placeholder: 'email',
         inputType: 'icon-input',
         icon: 'person',
         component: IconInput,
@@ -40,7 +38,7 @@ class RegistrationForm extends React.Component {
         name: 'password',
         password: true,
         icon: 'lock',
-        placeholder: 'Password',
+        placeholder: 'password',
         component: IconInput,
         validate: [
             requiredValidation
@@ -62,26 +60,14 @@ class RegistrationForm extends React.Component {
         ]
     }];
 
-    constructor(props) {
-        super(props);
-        const {submit} = props;
-        const buttonProps = {
-            color: variables.accentColor,
-            raised: true,
-            onPress: submit,
-            text: 'Sign Up'
-        };
-
-        this.formComponent = GenerateForm(LoginButton, buttonProps);
-    }
-
     render() {
-        const {isLoader} = this.props;
-        const Form = this.formComponent;
+        const {isLoader, submit} = this.props;
         return (
-            <Form
+            <CommonForm
                 isLoader={isLoader}
                 config={this.config}
+                submitText='Sign Up'
+                submit={submit}
             />
         );
     }

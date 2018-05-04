@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, TextInput} from 'react-native';
-import {Button, Subheader} from 'react-native-material-ui';
+import {View} from 'react-native';
+import {Subheader} from 'react-native-material-ui';
 import {Permissions} from 'expo';
 import PropTypes from 'prop-types';
 import DonutGraph from '../../../components/DonutGraph';
-import variables from "../../../variables";
+import variables from '../../../variables';
 import SubmitButton from '../../../components/SubmitButton';
 import Logo from '../../../components/Logo';
 
@@ -87,7 +87,8 @@ class Dashboard extends React.Component {
                 <View style={{
                     flex: 2,
                     justifyContent: 'center'
-                }}>
+                }}
+                >
                     <SubmitButton
                         color={variables.accentColor}
                         text='Go to scanner'

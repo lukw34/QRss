@@ -14,7 +14,8 @@ const Root = () => (
                 'registration',
                 'scanner',
                 'board',
-                'boardLoader'
+                'boardLoader',
+                'addMessage'
             ]}
         />
     </View>
