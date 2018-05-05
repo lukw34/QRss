@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, KeyboardAvoidingView} from 'react-native';
+import {View} from 'react-native';
 import {connect} from 'react-redux';
 
 import styles from './styles';
@@ -34,7 +34,7 @@ class Registration extends React.Component {
     render() {
         const {isLoader} = this.props;
         return (
-            <KeyboardAvoidingView behavior='pading' style={styles.registrationScreenContainer}>
+            <View style={styles.registrationScreenContainer}>
                 <View style={{flex: 1}} />
                 <View style={{flex: 7}}>
                     <RegistrationForm
@@ -42,7 +42,7 @@ class Registration extends React.Component {
                         isLoader={isLoader}
                     />
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 }

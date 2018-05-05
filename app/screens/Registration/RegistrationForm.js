@@ -2,7 +2,7 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import PropTypes from 'prop-types';
 
-import {requiredValidation, emailValidation, shouldBeEqual} from '../../utils/validators';
+import {requiredValidation, emailValidation, shouldBeEqual, lengthValidation} from '../../utils/validators';
 import IconInput from '../../components/IconInput';
 import ImageInput from '../../components/ImageInput';
 import CommonForm from '../../components/CommonForm';
@@ -41,7 +41,7 @@ class RegistrationForm extends React.Component {
         placeholder: 'password',
         component: IconInput,
         validate: [
-            requiredValidation
+            requiredValidation, lengthValidation
         ]
     }, {
         name: 'repassword',
@@ -50,7 +50,7 @@ class RegistrationForm extends React.Component {
         placeholder: 'Type password again',
         component: IconInput,
         validate: [
-            requiredValidation
+            requiredValidation, lengthValidation
         ]
     }, {
         name: 'photoURL',

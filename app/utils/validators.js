@@ -2,6 +2,7 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-
 
 const Errors = {
     REQUIRED: 'Field is required',
+    TOO_SHORT: 'Too short',
     EMAIL_FORMAT: 'Email format is invalid',
 };
 
@@ -18,8 +19,10 @@ const shouldBeEqual = ({value: firstValue, name: firstName}, {value: secondValue
 
     return null;
 };
+const lengthValidation = (value) => value.length < 7 ? Errors.TOO_SHORT: null;
 
 export {
+    lengthValidation,
     shouldBeEqual,
     requiredValidation,
     emailValidation
