@@ -19,16 +19,16 @@ class AddMessage extends React.Component {
 
     static propTypes = {
         isLoader: PropTypes.bool,
-        submit: PropTypes.func,
-        closeModal: PropTypes.func,
-        navigation: PropTypes.shape({})
+        navigation: PropTypes.shape({
+            goBack: PropTypes.func
+        })
     };
 
 
     onDismissPress = () => this.props.navigation.goBack();
 
     onSubmit = async (data) => {
-        const {navigation: {state: {params: {onSubmit}}, goBack}} = this.props
+        const {navigation: {state: {params: {onSubmit}}, goBack}} = this.props;
         await onSubmit(data);
         goBack();
     };
@@ -45,10 +45,7 @@ class AddMessage extends React.Component {
                         isLoader={isLoader}
                     />
                 </View>
-                <View style={{
-                    flex: 2
-                }}
-                >
+                <View style={{flex: 2}}>
                     <SubmitButton
                         color='#D94141'
                         raised

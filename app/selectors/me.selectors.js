@@ -24,6 +24,19 @@ const getSubscriptionsCount = createSelector(
     subscriptions => subscriptions.length
 );
 
+const getSubscriptionStatistics = createSelector(
+    getSubscriptionsCount,
+    count => ([{
+        name: 'Your available subscription',
+        value: AVAILABLE_SUBSCRIPTIONS - count,
+        fill: '#1f77b4'
+    }, {
+        name: 'Number of subscribed boards',
+        value: count,
+        fill: '#ff7f0e'
+    }])
+);
+
 const isAvailableSubscription = createSelector(
     getSubscriptionsCount,
     subscriptionCount => AVAILABLE_SUBSCRIPTIONS > subscriptionCount
@@ -38,6 +51,7 @@ const isBoardSubscribed = createSelector(
 );
 
 export {
+    getSubscriptionStatistics,
     isBoardSubscribed,
     isAvailableSubscription,
     subscriptionSelector,

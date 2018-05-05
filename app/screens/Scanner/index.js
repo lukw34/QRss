@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Dimensions} from 'react-native';
-import {BarCodeScanner} from 'expo';
+import {BarCodeScanner, Permissions} from 'expo';
 
 
 class Scanner extends React.Component {
@@ -9,10 +9,10 @@ class Scanner extends React.Component {
         header: null
     });
 
-
     static propTypes = {
         navigation: PropTypes.shape({
-            navigate: PropTypes.func
+            navigate: PropTypes.func,
+            goBack: PropTypes.func
         })
     };
 
@@ -20,9 +20,16 @@ class Scanner extends React.Component {
         isRead: false
     };
 
+    async componentDidMount() {
+        const {status} = await Permissions.askAsync(Permissions.CAMERA);
+        if(status !== 'granted') {
+            this.props.navigation.goBack();
+        }
+    }
+
     onBarCodeRead = ({data: boardId}) => {
         const {isRead} = this.state;
-        if(!isRead) {
+        if (!isRead) {
             this.setState({
                 isRead: true
             });

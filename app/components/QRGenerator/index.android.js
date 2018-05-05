@@ -17,7 +17,8 @@ class QRGenerator extends React.Component {
         isLoader: PropTypes.bool,
         startLoader: PropTypes.func,
         stopLoader: PropTypes.func,
-        closeModal: PropTypes.func
+        closeModal: PropTypes.func,
+        rootNavigateTo: PropTypes.func
     };
 
     state = {
@@ -71,18 +72,18 @@ class QRGenerator extends React.Component {
         return urlQR;
     };
 
+    goToBoard = () => {
+        const {id: boardId, rootNavigateTo, closeModal} = this.props;
+        rootNavigateTo('BoardLoader', {boardId});
+        closeModal();
+    };
+
     render() {
         const {urlQR: uri} = this.state;
         const {isLoader, closeModal} = this.props;
         const shouldBeLoader = !uri || isLoader;
         return (
-            <View style={{
-                flex: 1,
-                justifyContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'center'
-            }}
-            >
+            <View style={styles.QRContainer}>
                 <View style={{
                     flex: 2,
                     justifyContent: 'center',
@@ -119,14 +120,23 @@ class QRGenerator extends React.Component {
                         }}
                     />
                     <Button
+                        primary
+                        text='Go to board'
+                        icon=''
+                        onPress={this.goToBoard}
+                        disabled={shouldBeLoader}
+                        style={{
+                            text: {color: variables.accentColor},
+                            container: [styles.QRButtonContainer, styles.QRGoButton]
+                        }}
+                    />
+                    <Button
                         warnin
                         text='Close'
                         onPress={closeModal}
                         disabled={shouldBeLoader}
                         style={{
-                            text: {
-                                color: variables.accentColor
-                            },
+                            text: {color: 'red'},
                             container: [styles.QRButtonContainer, styles.QRCloseButton],
                         }}
                     />

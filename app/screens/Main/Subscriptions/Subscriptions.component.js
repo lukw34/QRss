@@ -30,7 +30,8 @@ const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress, onDele
 SubscriptionsComponent.propTypes = {
     onItemPress: PropTypes.func,
     goToScanner: PropTypes.func,
-    subscriptions: PropTypes.arrayOf(PropTypes.shape({}))
+    subscriptions: PropTypes.arrayOf(PropTypes.shape({})),
+    onDeletePress: PropTypes.func
 };
 
 export default SubscriptionsComponent;

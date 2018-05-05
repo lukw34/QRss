@@ -28,6 +28,7 @@
     "import/no-extraneous-dependencies": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-indent": "off",
+    "react/no-typos": "off",
     "react/jsx-indent-props": "off",
     "react/jsx-handler-names": "off",
     "react/require-default-props": "off",

@@ -7,14 +7,14 @@ import Message from '../../components/Message';
 import styles from './styles';
 
 const Board = ({
-                   description,
-                   messages,
-                   onActionButtonPress,
-                   isSubscribed,
-                   isSubscriptionActive,
-                   isLoader,
-                   subscribeBoard
-               }) => (
+    description,
+    messages,
+    onActionButtonPress,
+    isSubscribed,
+    isSubscriptionActive,
+    isLoader,
+    subscribeBoard
+}) => (
     <View style={styles.boardContainer}>
         <View style={styles.boardHeaderContainer}>
             <Button

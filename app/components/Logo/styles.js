@@ -9,4 +9,4 @@ export default StyleSheet.create({
         margin: 25,
         borderRadius: 12
     }
-})
+});

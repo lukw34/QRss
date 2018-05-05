@@ -3,7 +3,7 @@ import {FileSystem, Permissions} from 'expo';
 import {CameraRoll} from 'react-native';
 
 const generateId = () => {
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const id = [];
     for (let i = 0; i < 15; i++) {
         id.push(possible.charAt(Math.floor(Math.random() * possible.length)));

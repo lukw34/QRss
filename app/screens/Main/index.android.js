@@ -1,10 +1,12 @@
-import {TabNavigator} from 'react-navigation';
 import React from 'react';
+import PropTypes from 'prop-types';
+import {TabNavigator} from 'react-navigation';
 import {ToastAndroid} from 'react-native';
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {Constants, Permissions, Notifications} from 'expo';
 
+import {addMessage} from '../../actions/boards.actions';
 import variables from '../../variables';
 import Dashboard from './Dashboard';
 import Map from './Map/index.android';
@@ -13,6 +15,9 @@ import Subscriptions from './Subscriptions';
 import HeaderRight from '../../components/Header/HeaderRight';
 import HeaderTitle from '../../components/Header/HeaderTitle';
 
+const mapDispatchToProps = dispatch => ({
+    addNewMessage: message => dispatch(addMessage(message))
+});
 
 class Main extends React.Component {
     static navigationOptions = {
@@ -21,15 +26,16 @@ class Main extends React.Component {
             borderBottomWidth: 4,
             borderColor: variables.divider
         },
-        headerTitle: (<HeaderTitle/>),
-        headerRight: (<HeaderRight/>),
+        headerTitle: (<HeaderTitle />),
+        headerRight: (<HeaderRight />),
         headerLeft: null
     };
 
     static propTypes = {
         navigation: PropTypes.shape({
             navigate: PropTypes.func
-        })
+        }),
+        addNewMessage: PropTypes.func
     };
 
     state = {
@@ -39,33 +45,37 @@ class Main extends React.Component {
     async componentDidMount() {
         this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
             if (!user) {
-                ToastAndroid.showWithGravityAndOffset(
-                    'Thank you for your time!',
-                    ToastAndroid.SHORT,
-                    ToastAndroid.BOTTOM,
-                    0,
-                    150
-                );
-                this.props.navigation.navigate('Login');
-                this.authSubscription();
-                this.subscribeBoard();
+                this.handleLogOut();
             }
         });
 
         await this.checkNotificationsPermissions();
+        const {uid} = firebase.auth().currentUser || {};
 
-        this.subscribeBoard = firebase.database()
-            .ref('boards/AKy56gNYzLp27AE')
-            .on('child_changed', (snapshot) => {
-                if(snapshot) {
-                    this.handleMessageAdded(snapshot);
-                }
-            });
+        this.addSubscriptionListener = firebase.database().ref(`users/${uid}/boards`);
+        this.addSubscriptionListener.on('child_added', snapshot => {
+            if (snapshot) {
+                this.handleAddSubscription(snapshot);
+            }
+        });
+
+        this.removeSubscriptionListenre = firebase.database()
+            .ref(`users/${uid}/boards`);
+        this.removeSubscriptionListenre.on('child_removed', snapshot => {
+            if (snapshot) {
+                this.handleRemoveSubscription(snapshot);
+            }
+        });
     }
 
     componentWillUnmount() {
         this.authSubscription();
+        this.addSubscriptionListener.off('child_added');
+        this.removeSubscriptionListenre.off('child_removed');
+        Object.keys(this.boardSubscription).map(key => this.boardSubscription[key].off('child_changed'));
     }
+
+    boardSubscription = {};
 
     handleMessageAdded(snapshot) {
         const data = snapshot.val();
@@ -75,12 +85,52 @@ class Main extends React.Component {
                 .filter(({createdAt}) => !!createdAt)
                 .sort((a = '', b = '') => new Date(b.createdAt) - new Date(a.createdAt));
 
-            const user = firebase.auth().currentUser;
-            const {email} = user || {};
+            const {email} = firebase.auth().currentUser || {};
             if (lastMessage.author !== email) {
+                this.props.addNewMessage(lastMessage);
                 this.sendImmediateNotification();
             }
         }
+    }
+
+    handleAddSubscription(snapshot) {
+        const {id} = snapshot.val();
+        const subscription = firebase.database()
+            .ref(`boards/${id}`);
+
+        if(!this.boardSubscription[id]) {
+            subscription.on('child_changed', (snapshot) => {
+                if (snapshot) {
+                    this.handleMessageAdded(snapshot);
+                }
+            });
+            this.boardSubscription = {
+                ...this.boardSubscription,
+                [id]: subscription
+            };
+        }
+    }
+
+    handleRemoveSubscription(snapshot) {
+        const {id} = snapshot.val();
+        const subscription = this.boardSubscription[id];
+        subscription.off('child_changed');
+        delete this.boardSubscription[id];
+    }
+
+    handleLogOut() {
+        ToastAndroid.showWithGravityAndOffset(
+            'Thank you for your time!',
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            150
+        );
+        this.props.navigation.navigate('Login');
+        this.authSubscription();
+        this.addSubscriptionListener.off('child_added');
+        this.removeSubscriptionListenre.off('child_removed');
+        Object.keys(this.boardSubscription).map(key => this.boardSubscription[key].off('child_changed'));
     }
 
     async checkNotificationsPermissions() {
@@ -98,7 +148,8 @@ class Main extends React.Component {
             title: 'New message available in your subscriptions',
             data: {type: 'immediate'},
             android: {
-                sound: true
+                sound: true,
+                icon: 'https://firebasestorage.googleapis.com/v0/b/qrss-c2191.appspot.com/o/logo_xsmall.jpeg?alt=media&token=082c8f0a-1d67-4a4f-b8ed-c138f0c560e0'
             }
         };
 
@@ -124,7 +175,7 @@ class Main extends React.Component {
                         backgroundColor: variables.darkPrimary,
                     },
                     labelStyle: {
-                        fontSize: 11,
+                        fontSize: 10,
                     },
                     tintColor: variables.accentColor,
                     indicatorStyle: {
@@ -142,4 +193,4 @@ class Main extends React.Component {
     }
 }
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);

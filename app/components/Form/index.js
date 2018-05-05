@@ -7,7 +7,7 @@ import {Field} from 'redux-form';
 const GenerateForm = (SubmitButton, buttonProps) => {
     const Form = ({config = [], isLoader}) => (
         <View style={{flex: 1}}>
-            <View style={{flex: 3}}>
+            <View style={{flex: 5}}>
                 {config.map(element => (<Field
                     key={element.name}
                     {...element}

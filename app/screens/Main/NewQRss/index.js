@@ -26,7 +26,10 @@ class NewQRss extends React.Component {
         isLoader: PropTypes.bool,
         createNewQRss: PropTypes.func,
         startLoader: PropTypes.func,
-        stopLoader: PropTypes.func
+        stopLoader: PropTypes.func,
+        screenProps: PropTypes.shape({
+            rootNavigateTo: PropTypes.func
+        }),
     };
 
     state = {
@@ -51,7 +54,7 @@ class NewQRss extends React.Component {
     };
 
     render() {
-        const {isLoader, createNewQRss, startLoader, stopLoader} = this.props;
+        const {isLoader, createNewQRss, startLoader, stopLoader, screenProps: {rootNavigateTo}} = this.props;
         const {modalData, modalVisible} = this.state;
         const generatorProps = {
             createRequest: createNewQRss,
@@ -59,6 +62,7 @@ class NewQRss extends React.Component {
             isLoader,
             stopLoader,
             startLoader,
+            rootNavigateTo,
             ...modalData
         };
         return (

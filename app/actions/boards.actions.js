@@ -128,6 +128,7 @@ const getAllBoards = () => async dispatch => {
 
 
 export {
+    addMessage,
     deleteBoardFromMe,
     getSubscribeBoardMessagesCounter,
     subscribeBoard,

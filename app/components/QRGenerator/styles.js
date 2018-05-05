@@ -3,6 +3,12 @@ import variables from '../../variables';
 
 
 export default StyleSheet.create({
+    QRContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
     QRImageContainer: {
         width: 250,
         height: 250
@@ -14,9 +20,12 @@ export default StyleSheet.create({
         borderWidth: 2
     },
     QRCloseButton: {
-        borderColor: variables.accentColor
+        borderColor: 'red'
     },
     QRSaveButton: {
         borderColor: variables.primary
+    },
+    QRGoButton: {
+        borderColor: variables.accentColor
     }
 });

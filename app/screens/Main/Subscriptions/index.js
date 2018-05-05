@@ -29,7 +29,7 @@ class Subscriptions extends React.Component {
     componentDidMount() {
         const {subscriptions, getMessagesCounters} = this.props;
         try {
-            subscriptions.forEach(({id}) => getMessagesCounters(id))
+            subscriptions.forEach(({id}) => getMessagesCounters(id));
         } catch (e) {
             //handle catch
         }

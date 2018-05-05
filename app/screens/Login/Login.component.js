@@ -10,14 +10,13 @@ import styles from './styles';
 
 const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoogleSignInPress, isLoader}) => (
     <View style={styles.loginScreenContainer}>
-        <View style={{
-            flex: 3,
-            flexDirection: 'row',
-            justifyContent: 'center'
-        }}
-        >
-            <Logo />
-        </View>
+        <Logo
+            style={{
+                flex: 3,
+                flexDirection: 'row',
+                justifyContent: 'center'
+            }}
+        />
         <View style={{flex: 5}}>
             <LoginForm
                 onSubmit={onSignInPress}

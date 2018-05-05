@@ -61,12 +61,13 @@ class Map extends React.Component {
             <MapView
                 style={{flex: 1}}
                 showsUserLocation
-                initialRegion={{
+                region={{
                     latitude,
                     longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
+
             >
                 {locations.map((coordinate, index) => (
                     <MapView.Marker

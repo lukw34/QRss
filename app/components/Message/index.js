@@ -44,4 +44,4 @@ Message.propTypes = {
     id: PropTypes.string
 };
 
-export default Message
+export default Message;
