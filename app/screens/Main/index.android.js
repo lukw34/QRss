@@ -164,7 +164,7 @@ class Main extends React.Component {
     render() {
         const TabNavigatorComp = TabNavigator(
             {
-                Dashboard: {screen: Dashboard},
+                Main: {screen: Dashboard},
                 NewQRss: {screen: NewQRss},
                 RSSMap: {screen: Map},
                 Boards: {screen: Subscriptions}

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
 import {ListItem, Badge, Button} from 'react-native-material-ui';
 
+import ImagePreview from '../ImagePreview';
 import styles from './styles';
 
 const BoardItem = ({id, name, onItemPress, onDeletePress, image: uri, description, readCounter = 0, messageCounter = 0}) => (
@@ -30,9 +31,8 @@ const BoardItem = ({id, name, onItemPress, onDeletePress, image: uri, descriptio
         leftElement={
             <View style={styles.boardItemLeftElementContainerView}>
                 <Badge text={(messageCounter - readCounter).toString()}>
-                    <Image
-                        style={styles.boardItemLeftElementImage}
-                        source={{uri}}
+                    <ImagePreview
+                        uri={uri}
                     />
                 </Badge>
             </View>

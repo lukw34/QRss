@@ -4,6 +4,7 @@ import {Image} from 'react-native';
 import {ListItem} from 'react-native-material-ui';
 
 import styles from './styles';
+import ImagePreview from '../ImagePreview';
 
 const Message = ({id, author, title, description, avatar, imageUrl}) => (
     <ListItem
@@ -29,10 +30,7 @@ const Message = ({id, author, title, description, avatar, imageUrl}) => (
             style={styles.messageImageElement}
             source={{uri: avatar}}
         />}
-        rightElement={imageUrl ? <Image
-            style={styles.messageImageElement}
-            source={{uri: imageUrl}}
-        /> : null}
+        rightElement={<ImagePreview uri={imageUrl} />}
     />);
 
 Message.propTypes = {

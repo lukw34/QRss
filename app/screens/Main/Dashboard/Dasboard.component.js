@@ -31,7 +31,7 @@ const DashboardComponent = ({graphData, readBarCode, pressPremium}) => (
                     style={{flex: 1}}
                     data={graphData}
                 />
-                <View style={{flexDirection: 'column', flex: 1}}>
+                <View style={{flexDirection: 'column', flex: 1, justifyContent: 'center'}}>
                     {graphData.map(({name, fill: backgroundColor}) => (
                         <Text key={name} style={[styles.dashboardComponentLegendText, {backgroundColor}]}>{name}</Text>
                     ))}

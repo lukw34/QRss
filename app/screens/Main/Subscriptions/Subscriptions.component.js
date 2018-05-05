@@ -18,7 +18,7 @@ const SubscriptionsComponent = ({subscriptions, goToScanner, onItemPress, onDele
                     onDeletePress={onDeletePress}
                 />)}
         />
-        {AVAILABLE_SUBSCRIPTIONS > subscriptions && (
+        {AVAILABLE_SUBSCRIPTIONS > subscriptions.length && (
             <ActionButton
                 icon='camera'
                 onPress={goToScanner}

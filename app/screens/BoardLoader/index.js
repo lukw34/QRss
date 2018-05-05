@@ -49,10 +49,15 @@ class BoardLoader extends React.Component {
     };
 
     async componentDidMount() {
-        const {getBoardInfo, navigation: {state: {params: {boardId}}}} = this.props;
+        const {getBoardInfo, navigation: {state: {params: {boardId}}, navigate}} = this.props;
         const data = await getBoardInfo(boardId);
         setTimeout(() => {
-            this.props.navigation.navigate('Board', data);
+            const {urlQR, name} = data;
+            if(!urlQR && !name) {
+                navigate('Main');
+            } else {
+                navigate('Board', data);
+            }
         }, 500);
     }
 

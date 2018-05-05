@@ -16,8 +16,8 @@ export default StyleSheet.create({
         textAlign: 'center'
     },
     textInput: {
-        padding: 20,
-        fontSize: 18,
+        padding: 10,
+        fontSize: 15,
         color: variables.lightPrimary
     }
 });

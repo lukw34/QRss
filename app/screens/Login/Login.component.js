@@ -8,11 +8,11 @@ import variables from '../../variables';
 import LoginButton from '../../components/SubmitButton';
 import styles from './styles';
 
-const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoogleSignInPress, isLoader}) => (
+const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, isLoader}) => (
     <View style={styles.loginScreenContainer}>
         <Logo
             style={{
-                flex: 3,
+                flex: 4,
                 flexDirection: 'row',
                 justifyContent: 'center'
             }}
@@ -23,7 +23,7 @@ const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoo
                 isLoader={isLoader}
             />
         </View>
-        <View style={{flex: 3}}>
+        <View style={{flex: 2}}>
             <LoginButton
                 color={variables.darkPrimary}
                 disabled={isLoader}
@@ -31,13 +31,6 @@ const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoo
                 text='Sign In with facebook'
                 bordered
                 onPress={onFacebookSignInPress}
-            />
-            <LoginButton
-                color='#D94141'
-                raised
-                disabled={isLoader}
-                text='Sign In With Google +'
-                onPress={onGoogleSignInPress}
             />
         </View>
         <View style={styles.signUpContainer}>
@@ -55,7 +48,6 @@ LoginScreen.propTypes = {
     onSignInPress: PropTypes.func,
     onFacebookSignInPress: PropTypes.func,
     isLoader: PropTypes.bool,
-    onGoogleSignInPress: PropTypes.func,
     onSignUpPress: PropTypes.func
 };
 

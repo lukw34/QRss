@@ -9,7 +9,7 @@ export default StyleSheet.create({
         flexDirection: 'column'
     },
     signUpContainer: {
-        flex: 2,
+        flex: 3,
         justifyContent: 'center',
         alignItems: 'center'
     },

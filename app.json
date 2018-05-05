@@ -8,6 +8,14 @@
           "apiKey": "1008902256746-addudn3737coqatb9vkbtej65m1knjbc.apps.googleusercontent.com"
         }
       }
+    },
+    "name": "QRss",
+    "icon": "./assets/icon.png",
+    "version": "1.0.0",
+    "splash": {
+      "backgroundColor": "#FFFFFF",
+      "image": "./assets/logo.png",
+      "resizeMode": "contain"
     }
   }
 }

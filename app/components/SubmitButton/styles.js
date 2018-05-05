@@ -7,7 +7,7 @@ export default StyleSheet.create({
         marginBottom: 10,
         marginRight: 40,
         marginLeft: 40,
-        minHeight: 35,
+        minHeight: 40,
         maxHeight: 50
     },
     containerLoginButtonText: {

@@ -10,7 +10,6 @@ import LoginScreen from './Login.component';
 import {
     signInWithEmailAndPassword,
     signInWithFacebook,
-    signInWithGoogle,
     setActiveUser
 } from '../../actions/authorization.actions';
 
@@ -23,7 +22,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
     authWithEmailAndPassword: (email, password) => dispatch(signInWithEmailAndPassword({email, password})),
     authWithFacebook: () => dispatch(signInWithFacebook()),
-    authWithGoogle: () => dispatch(signInWithGoogle()),
     setMe: me => dispatch(setActiveUser(me))
 });
 
@@ -41,7 +39,6 @@ class Login extends React.Component {
         isError: PropTypes.bool,
         authWithEmailAndPassword: PropTypes.func,
         authWithFacebook: PropTypes.func,
-        authWithGoogle: PropTypes.func,
         setMe: PropTypes.func,
         style: PropTypes.number
     };
@@ -76,12 +73,11 @@ class Login extends React.Component {
     onSignUpPress = () => this.props.navigation.navigate('Registration');
 
     render() {
-        const {isLoader, authWithFacebook, authWithGoogle} = this.props;
+        const {isLoader, authWithFacebook} = this.props;
         const props = {
             isLoader,
             onSignInPress: this.onSignInPress,
             onFacebookSignInPress: authWithFacebook,
-            onGoogleSignInPress: authWithGoogle,
             onSignUpPress: this.onSignUpPress
         };
 

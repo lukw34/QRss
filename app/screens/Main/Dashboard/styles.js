@@ -61,6 +61,7 @@ export default StyleSheet.create({
     dashboardComponentLegendText: {
         flex: 1,
         margin: 2,
+        paddingTop: 2,
         maxHeight: 25,
         color: 'white',
         textAlign: 'center',

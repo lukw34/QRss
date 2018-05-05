@@ -80,7 +80,7 @@ class Board extends React.Component {
         await sendMessage(id, data);
     };
 
-    onActionButtonPress = () => this.props.navigation.navigate('AddMessage', {onSubmit: this.onSubmit})
+    onActionButtonPress = () => this.props.navigation.navigate('AddMessage', {onSubmit: this.onSubmit});
 
     subscribeBoard = () => {
         const {
