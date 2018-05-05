@@ -17,7 +17,7 @@ const LoginScreen = ({onSignUpPress, onSignInPress, onFacebookSignInPress, onGoo
                 justifyContent: 'center'
             }}
         />
-        <View style={{flex: 5}}>
+        <View style={{flex: 6}}>
             <LoginForm
                 onSubmit={onSignInPress}
                 isLoader={isLoader}

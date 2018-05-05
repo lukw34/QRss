@@ -3,7 +3,7 @@ import {
     ART,
     View
 } from 'react-native';
-import PropTypes from 'prop-types';
+
 import {pie, arc} from 'd3-shape';
 import {scaleOrdinal} from 'd3-scale';
 import {schemeCategory10} from 'd3-scale-chromatic';
