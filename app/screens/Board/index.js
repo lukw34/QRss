@@ -21,7 +21,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
     sendMessage: (boardId, message) => dispatch(updateBoardMessages(boardId, message)),
-    subscribeThisBoard: (board, count) => dispatch(subscribeBoard(board, count))
+    subscribeThisBoard: (board) => dispatch(subscribeBoard(board))
 });
 
 class Board extends React.Component {
@@ -86,7 +86,6 @@ class Board extends React.Component {
         const {
             isSubscriptionActive,
             subscribeThisBoard,
-            count,
             isSubscribed,
             navigation: {state: {params: {id: boardId, name, description, image, urlQR}}}
         } = this.props;
@@ -97,7 +96,7 @@ class Board extends React.Component {
                 name,
                 description,
                 image: image || urlQR
-            }, count);
+            });
         }
     };
 

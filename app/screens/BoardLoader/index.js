@@ -53,7 +53,7 @@ class BoardLoader extends React.Component {
         const data = await getBoardInfo(boardId);
         setTimeout(() => {
             const {urlQR, name} = data;
-            if(!urlQR && !name) {
+            if(!urlQR || !name) {
                 navigate('Main');
             } else {
                 navigate('Board', data);

@@ -59,7 +59,10 @@ const signInWithEmailAndPassword = ({email, password}) => dispatch => dispatch(f
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(({uid}) => Fetch.fetching(`${ROOT_URL}/users/${uid}.json`))))
-    .catch(err => dispatch(onAuthorizationFailure(err)));
+    .catch(err => {
+        dispatch(onAuthorizationFailure(err));
+        return Promise.reject(err);
+    });
 
 const signOutCurrentUser = () => async dispatch => {
     try {

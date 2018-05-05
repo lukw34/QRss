@@ -88,14 +88,13 @@ const updateBoardMessages = (boardId, message) => (dispatch, getState) => {
         .then(() => dispatch(addMessage(messageWithAuthor)))));
 };
 
-const subscribeBoard = ({name, description, boardId, image}, messageCounter) => (dispatch, getState) => {
+const subscribeBoard = ({name, description, boardId, image}) => (dispatch, getState) => {
     const {me: {me: {id}}} = getState();
     const board = {
         [boardId]: {
             name,
             id: boardId,
-            description,
-            readCounter: messageCounter
+            description
         }
     };
 

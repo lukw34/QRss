@@ -50,7 +50,7 @@ class Login extends React.Component {
                 const {uid: id} = user;
                 ToastAndroid.showWithGravityAndOffset(
                     'You are logged to application!',
-                    ToastAndroid.LONG,
+                    ToastAndroid.SHORT,
                     ToastAndroid.BOTTOM,
                     0,
                     150
@@ -66,7 +66,15 @@ class Login extends React.Component {
 
     onSignInPress = ({email, password} = {}) => {
         const {authWithEmailAndPassword} = this.props;
-        authWithEmailAndPassword(email, password);
+        authWithEmailAndPassword(email, password).catch(err => {
+            ToastAndroid.showWithGravityAndOffset(
+                'Login failure',
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM,
+                0,
+                150
+            );
+        });
     };
 
 

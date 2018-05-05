@@ -6,7 +6,7 @@ import {ListItem, Badge, Button} from 'react-native-material-ui';
 import ImagePreview from '../ImagePreview';
 import styles from './styles';
 
-const BoardItem = ({id, name, onItemPress, onDeletePress, image: uri, description, readCounter = 0, messageCounter = 0}) => (
+const BoardItem = ({id, name, onItemPress, onDeletePress, image: uri, description, messageCounter = 0}) => (
     <ListItem
         key={id}
         divider
@@ -30,7 +30,7 @@ const BoardItem = ({id, name, onItemPress, onDeletePress, image: uri, descriptio
         />}
         leftElement={
             <View style={styles.boardItemLeftElementContainerView}>
-                <Badge text={(messageCounter - readCounter).toString()}>
+                <Badge text={(messageCounter).toString()}>
                     <ImagePreview
                         uri={uri}
                     />
@@ -46,7 +46,6 @@ BoardItem.propTypes = {
     image: PropTypes.string,
     description: PropTypes.string,
     id: PropTypes.string,
-    readCounter: PropTypes.number,
     messageCounter: PropTypes.number
 };
 
