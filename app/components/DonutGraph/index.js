@@ -16,9 +16,6 @@ const {
 } = ART;
 
 class DonutGraph extends React.Component {
-    static propTypes = {
-        style: View.propTypes.style
-    };
 
     static getDerivedStateFromProps({data}) {
         const paths = pie()

@@ -14,8 +14,5 @@ const Logo = ({style}) => (
     </View>
 );
 
-Logo.propTypes = {
-    style: View.propTypes.style
-};
 
 export default Logo;
