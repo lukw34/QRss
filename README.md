@@ -12,9 +12,9 @@ Podstawowe funkcjonalności:
 - Tworzenie nowych tablic i generowanie kodów QR
 
 
-###Autor
+### Autor
 
-Łukasz Walewski 188584 (KrDZIs1012)
+Łukasz Walewski 188584 (KrDUIs1012)
 
 ### Prototyp
 
