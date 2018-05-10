@@ -66,7 +66,7 @@ class Login extends React.Component {
 
     onSignInPress = ({email, password} = {}) => {
         const {authWithEmailAndPassword} = this.props;
-        authWithEmailAndPassword(email, password).catch(err => {
+        authWithEmailAndPassword(email, password).catch(() => {
             ToastAndroid.showWithGravityAndOffset(
                 'Login failure',
                 ToastAndroid.LONG,

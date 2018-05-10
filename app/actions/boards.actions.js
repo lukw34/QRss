@@ -51,7 +51,7 @@ const createBoard = boardData => dispatch => {
 };
 
 const getBoard = id => async (dispatch) => {
-    const {body} = await dispatch(fetch(Fetch.fetching(`${ROOT_URL}/boards/${id}.json`)));
+    const {body} = await dispatch(Fetch.fetching(`${ROOT_URL}/boards/${id}.json`));
     const {messages = {}, name, description, urlQR} = body || {};
     dispatch(initMessages(Object.keys(messages)
         .map(key => ({

@@ -7,7 +7,7 @@ import {uploadImage, downloadImage} from '../../utils/utils';
 import variables from '../../variables';
 import styles from './styles';
 
-class QRGenerator extends React.Component {
+class QRGenerator extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string,
         createRequest: PropTypes.func,

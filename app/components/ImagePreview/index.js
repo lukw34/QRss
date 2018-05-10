@@ -6,7 +6,7 @@ import {Button} from 'react-native-material-ui';
 import styles from './styles';
 
 
-class ImagePreview extends React.Component {
+class ImagePreview extends React.PureComponent {
     static propTypes = {
         uri: PropTypes.string
     };
