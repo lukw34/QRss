@@ -1,6 +1,6 @@
 {
   "expo": {
-    "sdkVersion": "26.0.0",
+    "sdkVersion": "35.0.0",
     "android": {
       "package": "ca.brentvatne.growlerprowler",
       "config": {

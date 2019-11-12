@@ -3,24 +3,23 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {View, Text, Image} from 'react-native';
 import {ActionButton} from 'react-native-material-ui';
-import {ImagePicker} from 'expo';
+import { launchImageLibraryAsync } from 'expo-image-picker';
 
 import {isLoaderSelector} from '../../selectors/loader.selectors';
 import {popLoader, pushLoader} from '../../actions/loader.actions';
 import {uploadImage} from '../../utils/utils';
 import styles from './styles';
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     startLoading: () => dispatch(pushLoader()),
     stopLoading: () => dispatch(popLoader())
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     isLoader: isLoaderSelector(state)
 });
 
 class ImageInput extends React.Component {
-
     static propTypes = {
         isLoader: PropTypes.bool
     };
@@ -29,7 +28,7 @@ class ImageInput extends React.Component {
         const {startLoading, stopLoading, input: {onChange}} = this.props;
         startLoading();
         try {
-            const {uri} = await ImagePicker.launchImageLibraryAsync({
+            const {uri} = await launchImageLibraryAsync({
                 allowsEditing: true,
                 aspect: [4, 3],
             });
@@ -64,7 +63,7 @@ class ImageInput extends React.Component {
                         <ActionButton
                             hidden={isLoader}
                             onPress={this.getPhotos}
-                            icon='art-track'
+                            icon="art-track"
                         />
                     </View>
                 </View>

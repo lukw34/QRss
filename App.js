@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Root from './app/components/Root';
-import {ThemeProvider} from 'react-native-material-ui'
+import {ThemeContext, getTheme} from 'react-native-material-ui'
 import firebase from 'firebase';
 import {Provider} from 'react-redux';
-import {withNavigation} from 'react-navigation';
 
 import variables from './app/variables';
 import store from './app/store';
 
 console.disableYellowBox = true;
+
+firebase.initializeApp({
+    apiKey: 'AIzaSyANU7T383c1vDYAD72raeu8wy3M0AkxHxo',
+    authDomain: 'qrss-c2191.firebaseapp.com',
+    databaseURL: 'https://qrss-c2191.firebaseio.com',
+    projectId: 'qrss-c2191',
+    storageBucket: 'gs://qrss-c2191.appspot.com'
+});
 
 const uiTheme = {
     palette: {
@@ -17,26 +24,13 @@ const uiTheme = {
     }
 };
 
-class App extends React.Component {
-    componentWillMount() {
-        firebase.initializeApp({
-            apiKey: 'AIzaSyANU7T383c1vDYAD72raeu8wy3M0AkxHxo',
-            authDomain: 'qrss-c2191.firebaseapp.com',
-            databaseURL: 'https://qrss-c2191.firebaseio.com',
-            projectId: 'qrss-c2191',
-            storageBucket: 'gs://qrss-c2191.appspot.com'
-        });
-    }
+const App = () => (
+    <Provider store={store}>
+        <ThemeContext.Provider value={getTheme(uiTheme)}>
+            <Root/>
+        </ThemeContext.Provider>
+    </Provider>
+);
 
-    render() {
-        return (
-            <Provider store={store}>
-                <ThemeProvider uiTheme={uiTheme}>
-                    <Root/>
-                </ThemeProvider>
-            </Provider>
-        );
-    }
-}
 
 export default App;
